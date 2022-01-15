@@ -1,5 +1,5 @@
-import { MEMORY_DB } from "../constants/constants"
-import MemoryRepository from "./memory"
+import { MEMORY_DB } from "../constants/constants.js"
+import MemoryRepository from "./memory.js"
 
 export default class RepositoryFactory {
     static getRepository(repository) {

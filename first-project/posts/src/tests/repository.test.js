@@ -1,7 +1,7 @@
 import { describe, test, expect } from "@jest/globals"
 import { validate } from "uuid"
-import { MEMORY_DB } from "../constants/constants"
-import RepositoryFactory from "../repository/repositoryFactory"
+import { MEMORY_DB } from "../constants/constants.js"
+import RepositoryFactory from "../repository/repositoryFactory.js"
 
 describe("Testing Repositories", () => {
     const repositories = [RepositoryFactory.getRepository(MEMORY_DB)]
