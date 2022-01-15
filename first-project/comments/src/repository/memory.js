@@ -16,7 +16,7 @@ export default class MemoryRepository {
         return commentId
     }
 
-    fetchPostsComents(postId) {
+    fetchPostsCommentsByPostId(postId) {
         return this.db.has(postId) ? this.db.get(postId) : []
     }
 }

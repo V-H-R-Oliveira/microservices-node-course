@@ -19,7 +19,7 @@ router.post("/posts/:id/comment", (req, res) => {
 
 router.get("/posts/:id/comments", (req, res) => {
     const postId = req.params?.id
-    const comments = repository.fetchPostsComents(postId)
+    const comments = repository.fetchPostsCommentsByPostId(postId)
     res.json({ comments })
 })
 

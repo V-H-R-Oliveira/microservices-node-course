@@ -13,12 +13,12 @@ describe("Testing Repositories", () => {
     })
 
     test.each(repositories)("It should return a list of comments by postId", (repository) => {
-        const comments = repository.fetchPostsComents("1")
+        const comments = repository.fetchPostsCommentsByPostId("1")
         expect(comments).toBeInstanceOf(Array)
     })
 
     test.each(repositories)("It should return a non empty list of comments given a post with comments", (repository) => {
-        const comments = repository.fetchPostsComents("1234")
+        const comments = repository.fetchPostsCommentsByPostId("1234")
         expect(comments).not.toHaveLength(0)
     })
 
