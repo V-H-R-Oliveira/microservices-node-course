@@ -1,5 +1,5 @@
-const MEMORY = "MEMORY"
+const MEMORY_DB = "MEMORY_DB"
 
 export {
-    MEMORY
+    MEMORY_DB
 }

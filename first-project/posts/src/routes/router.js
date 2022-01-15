@@ -1,10 +1,10 @@
 import { Router } from "express"
-import { MEMORY } from "../constants/constants.js"
+import { MEMORY_DB } from "../constants/constants.js"
 import RepositoryFactory from "../repository/repositoryFactory.js"
 
 const router = Router({ strict: true, caseSensitive: true })
 
-const repository = RepositoryFactory.getRepository(MEMORY)
+const repository = RepositoryFactory.getRepository(MEMORY_DB)
 
 router.post("/post", (req, res) => {
     const post = req.body

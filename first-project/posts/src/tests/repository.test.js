@@ -1,10 +1,10 @@
 import { describe, test, expect } from "@jest/globals"
 import { validate } from "uuid"
-import { MEMORY } from "../constants/constants"
+import { MEMORY_DB } from "../constants/constants"
 import RepositoryFactory from "../repository/repositoryFactory"
 
 describe("Testing Repositories", () => {
-    const repositories = [RepositoryFactory.getRepository(MEMORY)]
+    const repositories = [RepositoryFactory.getRepository(MEMORY_DB)]
 
     test.each(repositories)("It should save a post and return an valid uuid", (repository) => {
         const postId = repository.savePost({title: "test", content: "testing"})
