@@ -17,6 +17,11 @@ describe("Testing Repositories", () => {
         expect(comments).toBeInstanceOf(Array)
     })
 
+    test.each(repositories)("It should return a non empty list of comments given a post with comments", (repository) => {
+        const comments = repository.fetchPostsComents("1234")
+        expect(comments).not.toHaveLength(0)
+    })
+
     test("It should thrown an error when trying to get an invalid repository type", () => {
         const fn = () => RepositoryFactory.getRepository("")
         expect(fn).toThrow(Error)
