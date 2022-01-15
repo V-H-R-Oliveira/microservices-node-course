@@ -5,17 +5,18 @@ export default class MemoryRepository {
         this.db = new Map()
     }
 
-    savePostComment(comment) {
+    savePostComment(postId, comment) {
         const commentId = v4()
 
         Object.assign(comment, { id: commentId })
-        this.db.set(commentId, comment)
+
+        const previousComments = this.db.has(postId) ? this.db.get(postId) : []
+        this.db.set(postId, [...previousComments, comment])
 
         return commentId
     }
 
     fetchPostsComents(postId) {
-        const comments = [...this.db.values()].filter((comment) => comment.postId == postId)
-        return comments
+        return this.db.has(postId) ? this.db.get(postId) : []
     }
 }

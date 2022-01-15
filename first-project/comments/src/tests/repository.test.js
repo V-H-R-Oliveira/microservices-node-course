@@ -7,7 +7,7 @@ describe("Testing Repositories", () => {
     const repositories = [RepositoryFactory.getRepository(MEMORY_DB)]
 
     test.each(repositories)("It should save a comment and return an valid uuid", (repository) => {
-        const commentId = repository.savePostComment({title: "test", content: "testing", postId: "1234"})
+        const commentId = repository.savePostComment("1234", {title: "test", content: "testing", postId: "1234"})
         const isValidUUID = validate(commentId)
         expect(isValidUUID).toBeTruthy()
     })

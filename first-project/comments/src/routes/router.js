@@ -13,10 +13,7 @@ router.post("/posts/:id/comment", (req, res) => {
         return res.status(400).json({ error: "Missing body" })
     }
 
-    Object.assign(comment, { postId })
-
-    const commentId = repository.savePostComment(comment)
-
+    const commentId = repository.savePostComment(postId, comment)
     res.status(201).json({ commentId })
 })
 
