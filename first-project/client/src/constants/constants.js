@@ -1,0 +1,5 @@
+const REFRESH_POSTS = "REFRESH_POSTS"
+
+export {
+    REFRESH_POSTS
+}
