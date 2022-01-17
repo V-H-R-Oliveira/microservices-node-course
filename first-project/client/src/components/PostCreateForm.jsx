@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react"
 import { AppContext } from "../context/AppContext"
-import { httpClient } from "../httpClients/posts-service"
+import { postsHttpClient } from "../httpClients/httpClients"
 
 const PostCreateForm = () => {
     const [state, setState] = useState({ title: "", content: "" })
@@ -22,7 +22,7 @@ const PostCreateForm = () => {
 
     const sendPost = async () => {
         const newPost = { ...state }
-        const response = await httpClient.post("/post", newPost)
+        const response = await postsHttpClient.post("/post", newPost)
         await refreshPosts()
 
         alert(`Created post ${response.data.postId}`)

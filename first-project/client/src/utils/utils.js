@@ -1,7 +1,7 @@
-import { httpClient } from "../httpClients/posts-service"
+import { postsHttpClient  } from "../httpClients/httpClients"
 
 const fetchAllPosts = async () => {
-    const response = await httpClient.get("/posts")
+    const response = await postsHttpClient.get("/posts")
     return response.data.posts
 }
 
