@@ -1,8 +1,10 @@
-import React, { useState } from "react"
+import React, { useContext, useState } from "react"
+import { AppContext } from "../context/AppContext"
 import { httpClient } from "../httpClients/posts-service"
 
-const PostCreate = () => {
+const PostCreateForm = () => {
     const [state, setState] = useState({ title: "", content: "" })
+    const { refreshPosts } = useContext(AppContext)
 
     const onChangeHandler = (event) => {
         setState({
@@ -21,11 +23,9 @@ const PostCreate = () => {
     const sendPost = async () => {
         const newPost = { ...state }
         const response = await httpClient.post("/post", newPost)
+        await refreshPosts()
 
-        const postId = response.data.postId
-        console.log("Created new post and received the id of", postId)
-
-        alert(`Created post ${postId}`)
+        alert(`Created post ${response.data.postId}`)
     }
 
     const onSubmitHandler = async (event) => {
@@ -57,4 +57,4 @@ const PostCreate = () => {
     )
 }
 
-export default PostCreate
+export default PostCreateForm
