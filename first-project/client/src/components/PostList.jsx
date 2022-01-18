@@ -10,11 +10,11 @@ const PostList = () => {
     }, [])
 
     return (
-        <div className="container">
+        <div className="container mt-3">
             <h3 className="text-center my-2 h3">Posts</h3>
 
             <div className="d-flex flex-row flex-wrap justify-content-between">
-                { posts.map((post) => <Post key={post.id} title={post.title} content={post.content} />)}
+                { posts.map((post) => <Post key={post.id} postId={post.id} title={post.title} content={post.content} />)}
             </div>
         </div>
     )

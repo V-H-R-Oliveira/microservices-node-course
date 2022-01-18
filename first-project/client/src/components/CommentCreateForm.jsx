@@ -1,10 +1,11 @@
 import React, { useContext, useState } from "react"
+import PropTypes from "prop-types"
+import { commentsHttpClient } from "../httpClients/httpClients"
 import { AppContext } from "../context/AppContext"
-import { postsHttpClient } from "../httpClients/httpClients"
 
-const PostCreateForm = () => {
-    const [state, setState] = useState({ title: "", content: "" })
-    const { refreshPosts } = useContext(AppContext)
+const CommentCreateForm = ({postId}) => {
+    const [state, setState] = useState({title: "", content: ""})
+    const { refreshCommentsByPostId } = useContext(AppContext)
 
     const onChangeHandler = (event) => {
         setState({
@@ -15,45 +16,55 @@ const PostCreateForm = () => {
 
     const resetState = () => {
         setState({
+            ...state,
             title: "",
-            content: "",
+            content: ""
         })
     }
 
-    const sendPost = async () => {
-        const response = await postsHttpClient.post("/post", state)
-        await refreshPosts()
-
-        alert(`Created post ${response.data.postId}`)
+    const sendComment = async () => {
+        const response = await commentsHttpClient.post(`${postId}/comment`, state)
+        return response.data.commentId
     }
 
     const onSubmitHandler = async (event) => {
         event.preventDefault()
-        await sendPost()
+
+        const commentId = await sendComment()
+        await refreshCommentsByPostId(postId)
+
+        alert(`Comment ${commentId} saved.`)
+
         resetState()
     }
 
     return (
         <div>
-            <h1 className="text-center h3">Create a new Post</h1>
+            <p className="h3">Add a comment to this post</p>
             <form onSubmit={onSubmitHandler}>
                 <div className="form-group">
                     <label htmlFor="title" className="h4 my-2">Title</label>
                     <input id="title" name="title" className="form-control" type="text"
-                        placeholder="Enter the post title" value={state.title} onChange={onChangeHandler} required />
+                        placeholder="Enter the comment title" value={state.title} onChange={onChangeHandler} required />
                 </div>
 
                 <div className="form-group my-2">
                     <label htmlFor="content" className="h4 my-2">Content</label>
                     <textarea id="content" name="content" className="form-control"
-                        cols="30" rows="10" placeholder="Enter the post content"
+                        cols="30" rows="10" placeholder="Enter the comment content"
                         value={state.content} onChange={onChangeHandler} required></textarea>
                 </div>
 
                 <button type="submit" className="btn btn-primary mt-2">Submit</button>
+
             </form>
         </div>
     )
+
 }
 
-export default PostCreateForm
+CommentCreateForm.propTypes = {
+    postId: PropTypes.string
+}
+
+export default CommentCreateForm

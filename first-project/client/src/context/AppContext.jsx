@@ -1,10 +1,10 @@
 import React, { createContext, useReducer } from "react"
 import PropTypes, { string } from "prop-types"
 import AppReducer from "../reducers/AppReducer"
-import { fetchAllPosts } from "../utils/utils"
-import { REFRESH_POSTS } from "../constants/constants"
+import { fetchAllCommentsByPostId, fetchAllPosts } from "../utils/utils"
+import { REFRESH_POSTS, REFRESH_COMMENTS } from "../constants/constants"
 
-const initialValues = { posts: [], refreshPosts: async () => null }
+const initialValues = { posts: [], comments: new Map(), refreshCommentsByPostId: async () => null, refreshPosts: async () => null }
 
 export const AppContext = createContext(initialValues)
 
@@ -16,8 +16,13 @@ export const AppProvider = ({children}) => {
         dispatch({ type: REFRESH_POSTS, payload: posts })
     }
 
+    const refreshCommentsByPostId = async (postId) => {
+        const comments = await fetchAllCommentsByPostId(postId)
+        dispatch({ type: REFRESH_COMMENTS, payload: comments })
+    }
+
     return (
-        <AppContext.Provider value={{ refreshPosts, posts: state.posts }}>
+        <AppContext.Provider value={{ refreshPosts, refreshCommentsByPostId, comments: state.comments, posts: state.posts }}>
             {children}
         </AppContext.Provider>
     )
@@ -25,6 +30,8 @@ export const AppProvider = ({children}) => {
 
 AppProvider.propTypes = {
     posts: PropTypes.arrayOf(PropTypes.shape({id: string, title: string, content: string})),
+    comments: PropTypes.any,
+    refreshCommentsByPostId: PropTypes.func,
     refreshPosts: PropTypes.func,
     children: PropTypes.node
 }

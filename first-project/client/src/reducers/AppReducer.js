@@ -1,4 +1,4 @@
-import { REFRESH_POSTS } from "../constants/constants"
+import { REFRESH_COMMENTS, REFRESH_POSTS } from "../constants/constants"
 
 const AppReducer = (state, action) => {
     switch (action.type) {
@@ -6,6 +6,13 @@ const AppReducer = (state, action) => {
         return {
             ...state,
             posts: action.payload ?? [],
+        }
+    case REFRESH_COMMENTS:
+        state.comments.set(action.payload.postId, action.payload.comments ?? [])
+
+        return {
+            ...state,
+            comments: state.comments
         }
     default:
         return state
