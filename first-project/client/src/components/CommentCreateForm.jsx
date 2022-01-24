@@ -23,7 +23,8 @@ const CommentCreateForm = ({postId}) => {
     }
 
     const sendComment = async () => {
-        const response = await commentsHttpClient.post(`${postId}/comment`, state)
+        const newComment = {...state, status: "pending"}
+        const response = await commentsHttpClient.post(`${postId}/comment`, newComment)
         return response.data.commentId
     }
 

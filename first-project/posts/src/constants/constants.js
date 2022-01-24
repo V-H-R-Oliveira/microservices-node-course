@@ -1,5 +1,7 @@
 const MEMORY_DB = "MEMORY_DB"
+const POST_CREATED = "POST_CREATED"
 
 export {
-    MEMORY_DB
+    MEMORY_DB,
+    POST_CREATED
 }

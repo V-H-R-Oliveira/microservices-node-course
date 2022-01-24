@@ -1,12 +1,12 @@
-import { commentsHttpClient, postsHttpClient  } from "../httpClients/httpClients"
+import { queryHttpClient  } from "../httpClients/httpClients"
 
 const fetchAllPosts = async () => {
-    const response = await postsHttpClient.get("/posts")
+    const response = await queryHttpClient.get("/posts")
     return response.data.posts
 }
 
 const fetchAllCommentsByPostId = async (postId) => {
-    const response = await commentsHttpClient.get(`${postId}/comments`)
+    const response = await queryHttpClient.get(`/post/${postId}/comments`)
     return {
         postId,
         comments: response.data.comments

@@ -7,13 +7,18 @@ const AppReducer = (state, action) => {
             ...state,
             posts: action.payload ?? [],
         }
-    case REFRESH_COMMENTS:
-        state.comments.set(action.payload.postId, action.payload.comments ?? [])
+    case REFRESH_COMMENTS: {
+        const { postId, comments } = action.payload
+
+        const currentPost = state.posts.find((post) => post.id == postId)
+        currentPost.comments = comments
 
         return {
             ...state,
-            comments: state.comments
+            posts: [...state.posts.filter((post) => post.id != postId), currentPost]
         }
+
+    }
     default:
         return state
     }

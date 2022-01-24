@@ -14,7 +14,7 @@ const PostList = () => {
             <h3 className="text-center my-2 h3">Posts</h3>
 
             <div className="d-flex flex-row flex-wrap justify-content-between">
-                { posts.map((post) => <Post key={post.id} postId={post.id} title={post.title} content={post.content} />)}
+                { posts.map((post) => <Post key={post.id} postId={post.id} title={post.title} content={post.content} comments={post.comments} />)}
             </div>
         </div>
     )
