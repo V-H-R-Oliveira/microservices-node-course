@@ -1,11 +1,13 @@
 import { Router } from "express"
 import { eventListener } from "../eventHandler/eventHandler.js"
 import RepositoryFactory from "../db/repositoryFactory.js"
-import { MEMORY_DB } from "../constants/constants.js"
+import { MEMORY_DB, FETCH_EVENTS } from "../constants/constants.js"
 
 const router = Router({ strict: true, caseSensitive: true })
 
 const repository = RepositoryFactory.getRepository(MEMORY_DB)
+
+eventListener.emit(FETCH_EVENTS, repository)
 
 router.post("/events", (req, res) => {
     const event = req.body
