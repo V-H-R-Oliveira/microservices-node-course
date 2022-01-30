@@ -1,0 +1,16 @@
+{
+  "name": "docker-project-example",
+  "version": "1.0.0",
+  "description": "Simple webserver",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "Vitor Oliveira",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^17.0.13"
+  },
+  "type": "module"
+}

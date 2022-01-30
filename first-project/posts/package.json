@@ -5,10 +5,8 @@
   "main": "server.js",
   "private": true,
   "scripts": {
-    "dev": "nodemon src/server.js",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
-    "clearJestCache": "NODE_OPTIONS=--experimental-vm-modules jest --clearCache"
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js"
   },
   "author": "Vitor Oliveira",
   "license": "ISC",

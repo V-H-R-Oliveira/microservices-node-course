@@ -1,0 +1,35 @@
+version: '3.9'
+services:
+  posts:
+    build: ./posts
+    ports:
+      - "8000:8000"
+    depends_on:
+      - event-bus
+  event-bus:
+    build: ./event-bus
+    ports:
+      - "7000:7000"
+  comments:
+    build: ./comments
+    ports:
+      - "9000:9000"
+    depends_on:
+      - event-bus
+      - posts
+  moderation:
+    build: ./moderation
+    ports:
+      - "9091:9091"
+    depends_on:
+      - event-bus
+      - comments
+  query:
+    build: ./query
+    ports:
+      - "4090:4090"
+    depends_on:
+      - event-bus
+      - posts
+      - comments
+      - moderation

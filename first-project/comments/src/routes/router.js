@@ -19,7 +19,7 @@ router.post("/posts/:id/comment", async (req, res) => {
 
     try {
         const event = { type: COMMENT_CREATED, payload: Object.assign({}, comment, { postId }) }
-        await axios.post("http://localhost:7000/v1/events", event)
+        await axios.post("http://event-bus:7000/v1/events", event)
     } catch (err) {
         console.error(`Failed to emit event ${COMMENT_CREATED} due error:`, err)
     }

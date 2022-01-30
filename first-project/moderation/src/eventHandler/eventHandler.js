@@ -13,5 +13,5 @@ eventListener.on(COMMENT_CREATED, async (comment) => {
         payload: comment
     }
 
-    await axios.post("http://localhost:7000/v1/events", event)
+    await axios.post("http://event-bus:7000/v1/events", event)
 })
