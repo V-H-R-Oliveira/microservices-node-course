@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: moderation-deply
+spec:
+  replicas: 1
+  selector: # look at different pods and monitor the labels defined at matchLabels
+    matchLabels:
+      app: moderation
+  template:
+    metadata:
+      labels:
+        app: moderation # pod label
+    spec:
+      containers:
+        - name: moderation
+          image: vitor/moderation
+          imagePullPolicy: Never
+          resources:
+            limits:
+              memory: "2Gi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: moderation-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: moderation
+  ports:
+    - name: moderation
+      protocol: TCP
+      port: 9091
+      targetPort: 9091

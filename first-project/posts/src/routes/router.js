@@ -18,7 +18,7 @@ router.post("/post", async (req, res) => {
 
     try {
         const event = { type: POST_CREATED, payload: post }
-        await axios.post("http://event-bus:7000/v1/events", event)
+        await axios.post("http://event-bus-srv:7000/v1/events", event)
     } catch (err) {
         console.error(`Failed to emit event ${POST_CREATED} due error:`, err)
     }

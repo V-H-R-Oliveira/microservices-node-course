@@ -1,4 +1,4 @@
-import { queryHttpClient  } from "../httpClients/httpClients"
+import { queryHttpClient } from "../httpClients/httpClients"
 
 const fetchAllPosts = async () => {
     const response = await queryHttpClient.get("/posts")

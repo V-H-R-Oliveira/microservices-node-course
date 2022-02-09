@@ -22,7 +22,7 @@ export default class MemoryRepository {
 
     updateComment(data) {
         const post = this.db.has(data?.postId) ? this.db.get(data?.postId) : {}
-        const previousComments = post.comments
+        const previousComments = post?.comments ?? []
 
         this.db.set(data?.postId, {
             ...post,

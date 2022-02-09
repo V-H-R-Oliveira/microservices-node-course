@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-deply
+spec:
+  replicas: 1
+  selector: # look at different pods and monitor the labels defined at matchLabels
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client # pod label
+    spec:
+      containers:
+        - name: client
+          image: vitor/client
+          imagePullPolicy: Never
+          resources:
+            limits:
+              memory: "2Gi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: client
+  ports:
+    - name: client
+      protocol: TCP
+      port: 3000
+      targetPort: 3000

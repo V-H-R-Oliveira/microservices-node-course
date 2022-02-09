@@ -1,0 +1,8 @@
+minikube docker-env
+
+# To point your shell to minikube's docker-daemon, run:
+# eval $(minikube -p minikube docker-env)
+
+# restart deployment
+
+kubectl rollout restart deployment <deployment name>

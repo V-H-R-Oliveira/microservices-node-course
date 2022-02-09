@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: query-deply
+spec:
+  replicas: 1
+  selector: # look at different pods and monitor the labels defined at matchLabels
+    matchLabels:
+      app: query
+  template:
+    metadata:
+      labels:
+        app: query # pod label
+    spec:
+      containers:
+        - name: query
+          image: vitor/query
+          imagePullPolicy: Never
+          resources:
+            limits:
+              memory: "2Gi"
+              cpu: "500m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: query-srv
+spec:
+  type: ClusterIP
+  selector:
+    app: query
+  ports:
+    - name: query
+      protocol: TCP
+      port: 4090
+      targetPort: 4090

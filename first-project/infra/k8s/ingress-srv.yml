@@ -1,0 +1,49 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-srv
+  annotations:
+    kubernetes.io/ingress.class: nginx # bind ingress to nginx routing match rules
+    nginx.ingress.kubernetes.io/use-regex: "true" # use regex in nginx
+  labels:
+    name: ingress-srv
+spec:
+  rules:
+    - host: posts.com # host that will be accessed by a client
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/api/v1/posts"
+            backend:
+              service:
+                name: query-srv
+                port:
+                  number: 4090
+          - pathType: Prefix
+            path: "/api/v1/post"
+            backend:
+              service:
+                name: posts-clusterip-srv
+                port:
+                  number: 8000
+          - pathType: Prefix
+            path: "/api/v1/posts/?(.*)/comment"
+            backend:
+              service:
+                name: comments-srv
+                port:
+                  number: 9000
+          - pathType: Prefix
+            path: "/api/v1/post/?(.*)/comments"
+            backend:
+              service:
+                name: query-srv
+                port:
+                  number: 4090
+          - pathType: Prefix
+            path: "/"
+            backend:
+              service:
+                name: client-srv
+                port:
+                  number: 3000
