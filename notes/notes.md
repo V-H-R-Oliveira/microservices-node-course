@@ -11,3 +11,24 @@ Essas dependências podem causar a queda de múltiplos serviços dependentes ent
 Utilizando a comunicação direta, a requisição irá demorar o tempo da requisição mais lenta.
 
 Comunicação assíncrona entre microserviços significa que os serviços irão se comunicar entre si utilizando eventos.
+
+Pods são as menores unidade de deploy do kubernetes, no qual são compostas por um conjunto de containers.
+
+O termo serviço em kubernetes se refere a uma interface de acesso a um conjunto de pods.
+
+O deployment é um monitor de pods, que periodicamente executa health checks e caso um pod quebre, o deployment é responsável por reiniciar o pod quebrado.
+
+O termo nó, em kubernetes, se refere a uma máquina virtual no qual um conjunto de pods irá ser executado.
+
+O cluster é um conjunto de nós mais o master.
+
+Os Services são objetos úteis para fornecer uma rede de comunicação entre pods.
+
+Existem diversos tipos de serviços como:
+
+- Cluster Ip - fornece uma url que expõe os pods dentro um cluster.
+- Node port - Torna um pod acessível fora do cluster, sendo utilizado para propósitos de desenvolvimento.
+- Load balancer - Também torna um pod acessível fora do cluster, sendo o jeito certo de se expor um pod.
+- External name - Redireciona requests feitas dentro do cluster para um CNAME.
+
+O Ingress Controller é um tipo de Pod responsável por definir as regras de distribuição de tráfico para os outros serviços.
