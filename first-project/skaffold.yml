@@ -1,0 +1,63 @@
+# tool to manage kubernetes in dev environment
+
+apiVersion: skaffold/v2beta22
+kind: Config
+deploy:
+  kubectl:
+    manifests: # collection of different config files
+      - "./infra/k8s/*"
+build:
+  local:
+    push: false
+    concurrency: 0
+    tryImportMissing: true
+    useDockerCLI: true
+  artifacts:
+    - image: vitor/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: src/**/*.js # if a change is not in js file, it will rebuild the whole image, otherwise it will copy the changes to the pod
+    - image: vitor/posts
+      context: posts
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: src/**/*.js
+    - image: vitor/comments
+      context: comments
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: src/**/*.js
+    - image: vitor/moderation
+      context: moderation
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: src/**/*.js
+    - image: vitor/event-bus
+      context: event-bus
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: src/**/*.js
+    - image: vitor/query
+      context: query
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - dest: .
+            src: src/**/*.js
