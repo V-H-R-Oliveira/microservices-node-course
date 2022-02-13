@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express"
-import { isIErrorFormatter } from "../utils/utils"
+import { isCustomError } from "../utils/utils"
 
 export const errorHandler = (err: Error, _req: Request, res: Response, next: NextFunction) => {
 
-    if (isIErrorFormatter(err)) {
-        return res.status(500).json({ error: err.formatError() })
+    if(isCustomError(err)) {
+        const { statusCode, errors } = err.formatError()
+        return res.status(statusCode).json({ errors })
     }
 
     next(err)

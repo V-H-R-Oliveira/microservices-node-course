@@ -4,7 +4,12 @@ interface IError {
 }
 
 interface IErrorFormat {
-    formatError(): IError[]
+    errors: IError[]
+    statusCode: number
 }
 
-export { IError, IErrorFormat }
+interface IErrorFormatter {
+    formatError(): IErrorFormat
+}
+
+export { IError, IErrorFormat, IErrorFormatter }

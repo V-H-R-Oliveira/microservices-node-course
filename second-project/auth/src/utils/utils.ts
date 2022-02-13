@@ -1,5 +1,5 @@
 import { ValidationError } from "express-validator"
-import { IError, IErrorFormat } from "../errors/IErrorFormatter"
+import { IError, IErrorFormatter } from "../errors/IErrorFormatter"
 
 const validationErrorFormatter = ({ msg, param }: ValidationError): IError => {
     return {
@@ -8,8 +8,8 @@ const validationErrorFormatter = ({ msg, param }: ValidationError): IError => {
     }
 }
 
-const isIErrorFormatter = (error: Error|IErrorFormat): error is IErrorFormat => {
+const isCustomError = (error: Error|IErrorFormatter): error is IErrorFormatter => {
     return "formatError" in error
 }
 
-export { validationErrorFormatter, isIErrorFormatter }
+export { validationErrorFormatter, isCustomError }
