@@ -1,0 +1,23 @@
+apiVersion: skaffold/v2beta22
+kind: Config
+deploy:
+  kubectl:
+    manifests:
+      - "infra/k8s/*.yml"
+build:
+  local:
+    push: false
+    concurrency: 0
+    tryImportMissing: false
+    useDockerCLI: false
+  artifacts:
+    - image: vitor/auth
+      context: auth
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - dest: "."
+            src: "src/**/*.ts"
