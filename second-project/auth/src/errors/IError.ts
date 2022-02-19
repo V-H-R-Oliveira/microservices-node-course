@@ -8,8 +8,5 @@ interface IErrorFormat {
     statusCode: number
 }
 
-interface IErrorFormatter {
-    formatError(): IErrorFormat
-}
 
-export { IError, IErrorFormat, IErrorFormatter }
+export { IError, IErrorFormat }

@@ -1,5 +1,6 @@
-import { RequestHandler } from "express"
+import { Request, Response } from "express"
 
-export const signOutHandler: RequestHandler = (req, res) => {
+export const signOutHandler = (req: Request, res: Response) => {
+    req.session = null
     res.sendStatus(200)
 }

@@ -1,5 +1,5 @@
-import { RequestHandler } from "express"
+import { Response, Request } from "express"
 
-export const currentUserHandler: RequestHandler = (req, res) => {
-    res.sendStatus(200)
+export const currentUserHandler = (req: Request, res: Response) => {
+    res.json(req._currentUser)
 }

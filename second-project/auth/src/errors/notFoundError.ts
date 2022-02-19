@@ -1,9 +1,8 @@
-import { ValidationError } from "express-validator"
 import CustomError from "./customError"
 
 export default class NotFoundError extends CustomError {
-    constructor(private errors?: ValidationError[]) {
-        super("route not found", errors, 404)
+    constructor() {
+        super("route not found", 404)
         Object.setPrototypeOf(this, NotFoundError.prototype)
     }
 
@@ -12,7 +11,7 @@ export default class NotFoundError extends CustomError {
             statusCode: this._statusCode,
             errors: [
                 {
-                    message: "Not found"
+                    message: "route not found"
                 }
             ]
         }

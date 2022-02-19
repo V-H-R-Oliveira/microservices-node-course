@@ -1,5 +1,8 @@
+import process from "process"
 import { ValidationError } from "express-validator"
-import { IError, IErrorFormatter } from "../errors/IErrorFormatter"
+import { sign, SignOptions } from "jsonwebtoken"
+import CustomError from "../errors/customError"
+import { IError } from "../errors/IError"
 
 const validationErrorFormatter = ({ msg, param }: ValidationError): IError => {
     return {
@@ -8,8 +11,13 @@ const validationErrorFormatter = ({ msg, param }: ValidationError): IError => {
     }
 }
 
-const isCustomError = (error: Error|IErrorFormatter): error is IErrorFormatter => {
+const isCustomError = (error: Error): error is CustomError => {
     return "formatError" in error
 }
 
-export { validationErrorFormatter, isCustomError }
+const createToken = (payload: object, jwtOptions: SignOptions) => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return sign(payload, process.env.JWT_KEY!, jwtOptions)
+}
+
+export { validationErrorFormatter, isCustomError, createToken }

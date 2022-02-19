@@ -1,9 +1,17 @@
-import { ValidationError } from "express-validator"
 import CustomError from "./customError"
 
 export default class DatabaseConnectionError extends CustomError {
-    constructor(private errors?: ValidationError[]) {
-        super("Failed to connect to the database", errors, 500)
+    constructor() {
+        super("Failed to connect to the database", 500)
         Object.setPrototypeOf(this, DatabaseConnectionError.prototype)
+    }
+
+    formatError() {
+        return {
+            statusCode: this._statusCode,
+            errors: [ {
+                message: "Failed to connect to the database"
+            } ]
+        }
     }
 }

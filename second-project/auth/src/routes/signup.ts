@@ -1,14 +1,23 @@
-import { RequestHandler } from "express"
-import { validationResult } from "express-validator"
+import { Request, Response } from "express"
+import BadRequestError from "../errors/badRequest"
+import { User } from "../models/user"
+import { createToken } from "../utils/utils"
 
-import RequestValidationError from "../errors/requestValidation"
+export const signUpHandler = async (req: Request, res: Response) => {
+    const hasEmail = await User.exists({ email: req.body.email })
 
-export const signUpHandler: RequestHandler = (req, res) => {
-    const validationErrors = validationResult(req)
-
-    if (!validationErrors.isEmpty()) {
-        throw new RequestValidationError(validationErrors.array())
+    if (hasEmail) {
+        throw new BadRequestError("Email already registered")
     }
 
-    res.sendStatus(201)
+    const newUser = User.build({ email: req.body.email, password: req.body.password })
+    await newUser.save()
+
+    const userJwtToken = createToken({
+        id: newUser.id,
+        email: newUser.email
+    }, { expiresIn: "24h" })
+
+    req.session = Object.assign({}, req.session, { jwt: userJwtToken })
+    res.status(201).send(newUser)
 }
