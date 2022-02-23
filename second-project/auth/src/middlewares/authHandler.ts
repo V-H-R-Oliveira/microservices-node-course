@@ -6,6 +6,5 @@ export const authHandler = (req: Request, _res: Response, next: NextFunction) =>
         return next()
     }
 
-
     throw new AuthError("Unauthorized access")
 }

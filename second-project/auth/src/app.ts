@@ -7,6 +7,7 @@ import cors from "cors"
 import { router } from "./router/router"
 import { errorHandler } from "./middlewares/errorHandler"
 import NotFoundError from "./errors/notFoundError"
+import { isProd } from "./utils/utils"
 
 const app = express()
 
@@ -14,7 +15,8 @@ app.set("trust proxy", true) // Trust request traffic as secure when using NGINX
 
 app.use(cookieSession({
     signed: false,
-    secure: true,
+    secure: isProd(),
+    httpOnly: true
 }))
 
 app.use(express.json())

@@ -11,7 +11,7 @@ import { signUpHandler } from "../routes/signup"
 
 const router = Router({ strict: true, caseSensitive: true })
 
-router.get("/current-user", decodeTokenHandler, authHandler, currentUserHandler)
+router.get("/current-user", decodeTokenHandler, currentUserHandler)
 
 router.post(
     "/signin",

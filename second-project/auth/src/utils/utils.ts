@@ -20,4 +20,6 @@ const createToken = (payload: object, jwtOptions: SignOptions) => {
     return sign(payload, process.env.JWT_KEY!, jwtOptions)
 }
 
-export { validationErrorFormatter, isCustomError, createToken }
+const isProd = () => !!(process.env?.NODE_ENV && process.env.NODE_ENV != "test")
+
+export { validationErrorFormatter, isCustomError, createToken, isProd }
