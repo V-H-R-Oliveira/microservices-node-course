@@ -32,3 +32,5 @@ Existem diversos tipos de serviços como:
 - External name - Redireciona requests feitas dentro do cluster para um CNAME.
 
 O Ingress Controller é um tipo de Pod responsável por definir as regras de distribuição de tráfico para os outros serviços.
+
+Podemos comunicar entre diferentes namespaces utilizando um external name service.
