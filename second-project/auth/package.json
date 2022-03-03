@@ -9,8 +9,7 @@
     "build": "tsc",
     "start": "npm run build && node build/server.js",
     "test": "jest --no-cache",
-    "test:coverage": "jest --coverage",
-    "prepare": "cd ../../ && husky install .husky"
+    "test:coverage": "jest --coverage"
   },
   "keywords": [
     "microservice",
@@ -39,7 +38,6 @@
     "@typescript-eslint/eslint-plugin": "^5.11.0",
     "@typescript-eslint/parser": "^5.11.0",
     "eslint": "^8.9.0",
-    "husky": "^7.0.0",
     "jest": "^27.5.1",
     "mongodb-memory-server": "^8.3.0",
     "supertest": "^6.2.2",
