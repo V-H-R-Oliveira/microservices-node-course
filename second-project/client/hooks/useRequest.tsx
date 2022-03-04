@@ -3,7 +3,7 @@ import { Method } from "axios"
 import FormErrorMessages from "../components/FormErrorMessages"
 import { buildHttpClient } from "../http/client"
 
-interface IUseRequest {
+export interface IUseRequest {
     url: string,
     method: Method,
     data: object | null
