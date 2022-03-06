@@ -1,7 +1,7 @@
 import mongoose from "mongoose"
 import process from "process"
 import { app } from "./app"
-import DatabaseConnectionError from "./errors/databaseConnection"
+import { DatabaseConnectionError } from "@vhr_gittix/common-lib"
 
 const port = process.env?.PORT ?? 8080
 

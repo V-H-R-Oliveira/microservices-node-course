@@ -1,7 +1,7 @@
 import { describe, test, expect } from "@jest/globals"
 import request from "supertest"
+import { IError } from "@vhr_gittix/common-lib"
 import { app } from "../../app"
-import { IError } from "../../errors/IError"
 
 describe("Test signup route", () => {
     const agent = request(app)

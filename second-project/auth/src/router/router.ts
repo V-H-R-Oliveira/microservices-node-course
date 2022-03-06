@@ -1,8 +1,6 @@
 import { Router } from "express"
 import { body } from "express-validator"
-import { authHandler } from "../middlewares/authHandler"
-import { decodeTokenHandler } from "../middlewares/decodeTokenHandler"
-import { validateRequestHandler } from "../middlewares/validateRequest"
+import { authHandler, decodeTokenHandler, validateRequestHandler } from "@vhr_gittix/common-lib"
 import { currentUserHandler } from "../routes/currentUser"
 
 import { signInHandler } from "../routes/signin"

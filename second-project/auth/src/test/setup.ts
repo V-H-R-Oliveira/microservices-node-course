@@ -27,7 +27,7 @@ afterAll(async () => {
     await mongodb.stop()
 })
 
-global.signup = async() => {
+global.signup = async () => {
     const user = { email: "vitor@test.com", password: "1234" }
     const response = await agent(app).post("/api/v1/users/signup").send(user).expect(201)
     return response.get("Set-Cookie")

@@ -1,7 +1,7 @@
 import { describe, test, beforeEach, expect } from "@jest/globals"
+import { IError } from "@vhr_gittix/common-lib"
 import request from "supertest"
 import { app } from "../../app"
-import { IError } from "../../errors/IError"
 
 describe("Test signin route", () => {
     const agent = request(app)

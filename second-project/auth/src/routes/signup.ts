@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import BadRequestError from "../errors/badRequest"
+import { BadRequestError } from "@vhr_gittix/common-lib"
 import { User } from "../models/user"
 import { createToken } from "../utils/utils"
 

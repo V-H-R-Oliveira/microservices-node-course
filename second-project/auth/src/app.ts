@@ -5,9 +5,7 @@ import cookieSession from "cookie-session"
 import helmet from "helmet"
 import cors from "cors"
 import { router } from "./router/router"
-import { errorHandler } from "./middlewares/errorHandler"
-import NotFoundError from "./errors/notFoundError"
-import { isProd } from "./utils/utils"
+import { isProd, errorHandler, NotFoundError } from "@vhr_gittix/common-lib"
 
 const app = express()
 
