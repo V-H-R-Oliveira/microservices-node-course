@@ -17,8 +17,8 @@ spec:
           image: vitor/client
           resources:
             limits:
-              memory: "2Gi"
-              cpu: "500m"
+              memory: "1Gi"
+              cpu: "0.4"
 ---
 apiVersion: v1
 kind: Service

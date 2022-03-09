@@ -11,8 +11,13 @@ const bootstrap = async () => {
     }
 
     try {
-        await mongoose.connect("mongodb://auth-mongo-srv:27017/auth")
-        console.log("Successfully connected to mongodb")
+        if (process.env?.MONGO_URI) {
+            await mongoose.connect(process.env.MONGO_URI)
+            console.log("Successfully connected to mongodb")
+            return
+        }
+
+        throw new DatabaseConnectionError()
     } catch (err) {
         console.error("Failed to connect due error:", err)
         throw new DatabaseConnectionError()

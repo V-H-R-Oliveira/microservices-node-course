@@ -6,10 +6,7 @@ interface IUser {
     password: string
 }
 
-interface IUserDoc extends Document {
-    email: string,
-    password: string
-}
+interface IUserDoc extends Document, IUser { }
 
 interface IUserModel extends Model<IUserDoc> {
     build(attrs: IUser): IUserDoc
