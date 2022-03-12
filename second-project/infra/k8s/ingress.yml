@@ -9,20 +9,27 @@ metadata:
     name: ingress-srv
 spec:
   rules:
-  - host: ticketing.dev
-    http:
-      paths:
-      - pathType: Prefix
-        path: "/api/v1/users/?(.*)"
-        backend:
-          service:
-            name: auth-srv
-            port:
-              number: 3000
-      - pathType: Prefix
-        path: "/?(.*)"
-        backend:
-          service:
-            name: client-srv
-            port:
-              number: 3000
+    - host: ticketing.dev
+      http:
+        paths:
+          - pathType: Prefix
+            path: "/api/v1/users/?(.*)"
+            backend:
+              service:
+                name: auth-srv
+                port:
+                  number: 3000
+          - pathType: Prefix
+            path: "/api/v1/tickets/?(.*)"
+            backend:
+              service:
+                name: tickets-srv
+                port:
+                  number: 3000
+          - pathType: Prefix
+            path: "/?(.*)"
+            backend:
+              service:
+                name: client-srv
+                port:
+                  number: 3000
