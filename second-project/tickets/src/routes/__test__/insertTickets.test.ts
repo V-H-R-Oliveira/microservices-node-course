@@ -1,8 +1,13 @@
-import { describe, test, expect } from "@jest/globals"
+import { describe, test, expect, jest } from "@jest/globals"
 import request from "supertest"
+import { stan } from "../../natsClient"
+
+jest.mock("../../natsClient")
+
 import { app } from "../../app"
 
 describe("Testing /ap1/v1/tickets endpoint", () => {
+
     const agent = request(app)
     const baseEndpoint = "/api/v1/tickets"
     const cookies = globalThis.signup()
@@ -42,5 +47,10 @@ describe("Testing /ap1/v1/tickets endpoint", () => {
         [ { title: "testing ticket", price: 1000.52 } ]
     ])("Creates a ticket with valid inputs (%o)", (payload) => {
         return agent.post(baseEndpoint).set("Cookie", cookies).send(payload).expect(201)
+    })
+
+    test("Stan client must be called only once", async () => {
+        await agent.post(baseEndpoint).set("Cookie", cookies).send({ title: "test", price: 1 }).expect(201)
+        expect(stan.client.publish).toHaveBeenCalledTimes(1)
     })
 })

@@ -11,5 +11,6 @@ module.exports = {
         "./src/test/env.ts"
     ],
     injectGlobals: false,
-    testTimeout: 60000 // 1 minute
+    testTimeout: 60000, // 1 minute
+    clearMocks: true
 }

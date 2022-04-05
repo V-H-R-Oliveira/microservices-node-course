@@ -13,8 +13,7 @@ router.post(
     authHandler,
     body("title").trim().notEmpty().withMessage("Title is required"),
     body("price")
-        .isCurrency({ allow_negatives: false, allow_negative_sign_placeholder: false })
-        .custom((price) => price > 0)
+        .isFloat({ gt: 0 })
         .withMessage("Price is required"),
     validateRequestHandler,
     insertTicketHandler
@@ -35,8 +34,7 @@ router.put(
     param("id").trim().isMongoId().withMessage("Invalid ticket id"),
     body("title").trim().notEmpty().withMessage("Title is required"),
     body("price")
-        .isCurrency({ allow_negatives: false, allow_negative_sign_placeholder: false })
-        .custom((price) => price > 0)
+        .isFloat({ gt: 0 })
         .withMessage("Price is required"),
     validateRequestHandler,
     updateTicketByIdHandler

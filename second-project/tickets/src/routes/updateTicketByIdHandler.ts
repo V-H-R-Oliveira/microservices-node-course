@@ -1,6 +1,8 @@
 import { AuthError, NotFoundError } from "@vhr_gittix/common-lib"
 import { Request, Response } from "express"
+import TicketUpdatedPublisher from "../events/publishers/ticketUpdated"
 import { Ticket } from "../models/ticket"
+import { stan } from "../natsClient"
 
 export const updateTicketByIdHandler = async (req: Request, res: Response) => {
     const ticket = await Ticket.findById(req.params.id)
@@ -19,5 +21,15 @@ export const updateTicketByIdHandler = async (req: Request, res: Response) => {
     })
 
     await ticket.save()
+
+    const publisher = new TicketUpdatedPublisher(stan.client)
+
+    publisher.publish({
+        id: ticket.id,
+        title: ticket.title,
+        price: ticket.price,
+        userId: ticket.userId
+    })
+
     return res.json(ticket)
 }

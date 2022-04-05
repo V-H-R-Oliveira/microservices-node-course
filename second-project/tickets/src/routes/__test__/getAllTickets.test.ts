@@ -1,5 +1,8 @@
-import { describe, test, expect } from "@jest/globals"
+import { describe, test, expect, jest } from "@jest/globals"
 import request from "supertest"
+
+jest.mock("../../natsClient")
+
 import { app } from "../../app"
 
 describe("Testing GET /ap1/v1/tickets endpoint", () => {
