@@ -1,5 +1,5 @@
 import moongose, { Model, Document } from "mongoose"
-import { updateIfCurrentPlugin } from "mongoose-update-if-current"
+// import { updateIfCurrentPlugin } from "mongoose-update-if-current"
 import { Order, OrderStatus } from "./order"
 
 interface ITicket {
@@ -43,7 +43,15 @@ const ticketSchema = new moongose.Schema({
 })
 
 ticketSchema.set("versionKey", "version")
-ticketSchema.plugin(updateIfCurrentPlugin)
+// ticketSchema.plugin(updateIfCurrentPlugin)
+
+ticketSchema.pre("save", function(done) {
+    this.$where = {
+        version: this.get("version") - 1
+    }
+
+    done()
+})
 
 ticketSchema.methods.isReserved = async function () {
     const existingOrder = await Order.findOne({

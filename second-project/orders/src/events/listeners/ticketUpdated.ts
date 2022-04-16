@@ -15,7 +15,7 @@ export default class TicketUpdatedListener extends Listener<ITicketUpdatedEvent>
             throw new Error("Ticket not found")
         }
 
-        ticket.set({ title: data.title, price: data.price })
+        ticket.set({ title: data.title, price: data.price, version: data.version })
         await ticket.save()
         msg.ack()
     }
