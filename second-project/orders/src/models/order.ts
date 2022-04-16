@@ -1,5 +1,6 @@
 import moongose, { Model, Document, Schema } from "mongoose"
 import { OrderStatus } from "@vhr_gittix/common-lib"
+import { updateIfCurrentPlugin } from "mongoose-update-if-current"
 import { ITicketDoc } from "./ticket"
 
 export { OrderStatus }
@@ -11,7 +12,9 @@ interface IOrder {
     ticket: ITicketDoc
 }
 
-interface IOrderDoc extends Document, IOrder { }
+interface IOrderDoc extends Document, IOrder {
+    version: number
+}
 
 interface IOrderModel extends Model<IOrderDoc> {
     build(attrs: IOrder): IOrderDoc
@@ -44,6 +47,9 @@ const orderSchema = new moongose.Schema({
         versionKey: false
     }
 })
+
+orderSchema.set("versionKey", "version")
+orderSchema.plugin(updateIfCurrentPlugin)
 
 orderSchema.statics.build = (attrs: IOrder) => {
     return new Order(attrs)

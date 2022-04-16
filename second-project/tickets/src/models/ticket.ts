@@ -1,4 +1,5 @@
 import moongose, { Model, Document } from "mongoose"
+import { updateIfCurrentPlugin } from "mongoose-update-if-current"
 
 interface ITicket {
     userId: string,
@@ -6,7 +7,9 @@ interface ITicket {
     price: number,
 }
 
-interface ITicketDoc extends Document, ITicket { }
+interface ITicketDoc extends Document, ITicket {
+    version: number
+}
 
 interface ITicketModel extends Model<ITicketDoc> {
     build(attrs: ITicket): ITicketDoc
@@ -34,6 +37,9 @@ const ticketSchema = new moongose.Schema({
         versionKey: false
     }
 })
+
+ticketSchema.set("versionKey", "version")
+ticketSchema.plugin(updateIfCurrentPlugin)
 
 ticketSchema.statics.build = (ticket: ITicket) => {
     return new Ticket(ticket)

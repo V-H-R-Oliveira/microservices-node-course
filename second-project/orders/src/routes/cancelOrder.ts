@@ -23,6 +23,7 @@ const cancelOrderHandler = async(req: Request, res: Response) => {
 
     publisher.publish({
         id: order.id,
+        version: order.version,
         ticket: {
             id: order.ticket.id
         }

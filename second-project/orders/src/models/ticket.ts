@@ -1,4 +1,5 @@
 import moongose, { Model, Document } from "mongoose"
+import { updateIfCurrentPlugin } from "mongoose-update-if-current"
 import { Order, OrderStatus } from "./order"
 
 interface ITicket {
@@ -7,11 +8,18 @@ interface ITicket {
     price: number,
 }
 
+interface ITicketSearchAttrs {
+    id: string,
+    version: number
+}
+
 export interface ITicketDoc extends Document, ITicket {
-    isReserved(): Promise<boolean>
+    isReserved(): Promise<boolean>,
+    version: number
 }
 
 interface ITicketModel extends Model<ITicketDoc> {
+    findByIdAndPreviousVersion(data: ITicketSearchAttrs): Promise<ITicketDoc|null>
     build(attrs: ITicket): ITicketDoc
 }
 
@@ -34,6 +42,9 @@ const ticketSchema = new moongose.Schema({
     }
 })
 
+ticketSchema.set("versionKey", "version")
+ticketSchema.plugin(updateIfCurrentPlugin)
+
 ticketSchema.methods.isReserved = async function () {
     const existingOrder = await Order.findOne({
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -48,6 +59,10 @@ ticketSchema.methods.isReserved = async function () {
     })
 
     return !!existingOrder
+}
+
+ticketSchema.statics.findByIdAndPreviousVersion = async function(data: ITicketSearchAttrs) {
+    return this.findOne({ _id: data.id, version: data.version - 1 })
 }
 
 ticketSchema.statics.build = (attrs: ITicket) => {

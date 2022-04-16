@@ -8,7 +8,7 @@ export default class TicketUpdatedListener extends Listener<ITicketUpdatedEvent>
     readonly subject = Subjects.TICKET_UPDATED
 
     async onMessage(data: ITicketUpdatedEvent["data"], msg: Message) {
-        const ticket = await Ticket.findById(data.id)
+        const ticket = await Ticket.findByIdAndPreviousVersion({ id: data.id, version: data.version })
 
         if (!ticket) {
             console.warn(`Ticket ${data.id} ${data.title} ${data.price} not found`)
