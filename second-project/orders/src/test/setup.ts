@@ -44,6 +44,7 @@ global.signup = () => {
 global.buildTicket = () => {
     return Ticket.build({
         title: "Testing",
-        price: 20
+        price: 20,
+        originalTicketId: new mongoose.Types.ObjectId().toString()
     }).save()
 }

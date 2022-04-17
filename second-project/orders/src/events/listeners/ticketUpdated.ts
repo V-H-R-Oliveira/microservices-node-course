@@ -11,7 +11,7 @@ export default class TicketUpdatedListener extends Listener<ITicketUpdatedEvent>
         const ticket = await Ticket.findByIdAndPreviousVersion({ id: data.id, version: data.version })
 
         if (!ticket) {
-            console.warn(`Ticket ${data.id} ${data.title} ${data.price} not found`)
+            console.warn(`Ticket (${data.id} ${data.title} ${data.price}) not found`)
             throw new Error("Ticket not found")
         }
 

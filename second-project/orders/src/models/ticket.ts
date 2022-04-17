@@ -19,7 +19,7 @@ export interface ITicketDoc extends Document, ITicket {
 }
 
 interface ITicketModel extends Model<ITicketDoc> {
-    findByIdAndPreviousVersion(data: ITicketSearchAttrs): Promise<ITicketDoc|null>
+    findByIdAndPreviousVersion(data: ITicketSearchAttrs): Promise<ITicketDoc | null>
     build(attrs: ITicket): ITicketDoc
 }
 
@@ -61,7 +61,7 @@ ticketSchema.methods.isReserved = async function () {
     return !!existingOrder
 }
 
-ticketSchema.statics.findByIdAndPreviousVersion = async function(data: ITicketSearchAttrs) {
+ticketSchema.statics.findByIdAndPreviousVersion = async function (data: ITicketSearchAttrs) {
     return this.findOne({ _id: data.id, version: data.version - 1 })
 }
 
