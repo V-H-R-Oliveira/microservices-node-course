@@ -1,10 +1,11 @@
-import process from "process"
 import { BadRequestError, NotFoundError, OrderStatus } from "@vhr_gittix/common-lib"
 import { Request, Response } from "express"
 import { Ticket } from "../models/ticket"
 import { Order } from "../models/order"
 import OrderCreatedPublisher from "../events/publishers/orderCreated"
 import { stan } from "../natsClient"
+import { EXPIRATION_WINDOW_SECONDS } from "../constants"
+
 
 const createOrderHandler = async (req: Request, res: Response) => {
     const ticket = await Ticket.findById(req.body.ticketId)
@@ -20,9 +21,7 @@ const createOrderHandler = async (req: Request, res: Response) => {
     }
 
     const expiresAt = new Date()
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const expirationThreshold = +process.env.EXPIRATION_WINDOW_SECONDS!
-    expiresAt.setSeconds(expiresAt.getSeconds() + expirationThreshold)
+    expiresAt.setSeconds(expiresAt.getSeconds() + EXPIRATION_WINDOW_SECONDS)
 
     const order = Order.build({
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

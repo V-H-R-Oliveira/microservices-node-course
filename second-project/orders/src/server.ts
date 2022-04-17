@@ -5,6 +5,7 @@ import { app } from "./app"
 import { stan } from "./natsClient"
 import TicketCreatedListener from "./events/listeners/ticketCreated"
 import TicketUpdatedListener from "./events/listeners/ticketUpdated"
+import ExpirationCompleteListener from "./events/listeners/expirationComplete"
 
 const port = process.env?.PORT ?? 8080
 
@@ -29,31 +30,26 @@ const bootstrap = async () => {
         throw new DatabaseConnectionError()
     }
 
-    try {
-        await stan.connect(process.env.NATS_CLUSTER_ID, process.env.NATS_CLIENT_ID, process.env.NATS_URL)
+    await stan.connect(process.env.NATS_CLUSTER_ID, process.env.NATS_CLIENT_ID, process.env.NATS_URL)
 
-        stan.client.on("close", () => {
-            console.info("Closing NATS connection")
-            process.exit()
-        })
+    stan.client.on("close", () => {
+        console.info("Closing NATS connection")
+        process.exit()
+    })
 
-        process.on("SIGINT", stan.client.close)
-        process.on("SIGTERM", stan.client.close)
+    process.on("SIGINT", stan.client.close)
+    process.on("SIGTERM", stan.client.close)
 
-        const ticketCreatedListener = new TicketCreatedListener(stan.client)
-        const ticketUpdatedListener = new TicketUpdatedListener(stan.client)
+    const ticketCreatedListener = new TicketCreatedListener(stan.client)
+    const ticketUpdatedListener = new TicketUpdatedListener(stan.client)
+    const expirationCompleteListener = new ExpirationCompleteListener(stan.client)
 
-        ticketCreatedListener.listen()
-        ticketUpdatedListener.listen()
+    ticketCreatedListener.listen()
+    ticketUpdatedListener.listen()
+    expirationCompleteListener.listen()
 
-        await mongoose.connect(process.env.MONGO_URI)
-        console.log("Successfully connected to mongodb")
-        return
-
-    } catch (err) {
-        console.error("Failed to connect due error:", err)
-        throw new DatabaseConnectionError()
-    }
+    await mongoose.connect(process.env.MONGO_URI)
+    console.log("Successfully connected to mongodb")
 }
 
 app.listen(port, async () => {
