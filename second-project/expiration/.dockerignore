@@ -1,0 +1,7 @@
+node_modules
+package-lock.json
+.eslintrc.cjs
+.gitignore
+.vscode
+coverage
+jest.config.cjs
