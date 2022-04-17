@@ -1,8 +1,10 @@
-import mongoose from "mongoose"
 import process from "process"
-import { app } from "./app"
+import mongoose from "mongoose"
 import { DatabaseConnectionError } from "@vhr_gittix/common-lib"
+import { app } from "./app"
 import { stan } from "./natsClient"
+import OrderCreatedListener from "./events/listeners/orderCreated"
+import OrderCancelledListener from "./events/listeners/orderCancelled"
 
 const port = process.env?.PORT ?? 8080
 
@@ -37,6 +39,12 @@ const bootstrap = async () => {
 
         process.on("SIGINT", stan.client.close)
         process.on("SIGTERM", stan.client.close)
+
+        const orderCreatedListener = new OrderCreatedListener(stan.client)
+        const orderCancelledListener = new OrderCancelledListener(stan.client)
+
+        orderCreatedListener.listen()
+        orderCancelledListener.listen()
 
         await mongoose.connect(process.env.MONGO_URI)
         console.log("Successfully connected to mongodb")

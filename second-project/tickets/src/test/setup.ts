@@ -1,5 +1,5 @@
 import process from "process"
-import { beforeAll, beforeEach, afterAll } from "@jest/globals"
+import { beforeAll, beforeEach, afterAll, jest } from "@jest/globals"
 import { sign } from "jsonwebtoken"
 import { MongoMemoryServer } from "mongodb-memory-server"
 import mongoose from "mongoose"
@@ -10,6 +10,8 @@ declare global {
 }
 
 let mongodb: MongoMemoryServer
+
+jest.mock("../natsClient.ts")
 
 beforeAll(async () => {
     mongodb = await MongoMemoryServer.create()

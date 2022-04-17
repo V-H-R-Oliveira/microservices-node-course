@@ -4,6 +4,6 @@ import { app } from "../../app"
 
 const agent = request(app)
 
-test("Returns 404 if ticket id is invalid", () => {
+test("Should return a 404 status if ticket id is invalid", () => {
     return agent.get("/test").expect(404)
 })

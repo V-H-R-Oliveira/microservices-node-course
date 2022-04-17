@@ -1,4 +1,4 @@
-import { AuthError, NotFoundError } from "@vhr_gittix/common-lib"
+import { AuthError, BadRequestError, NotFoundError } from "@vhr_gittix/common-lib"
 import { Request, Response } from "express"
 import TicketUpdatedPublisher from "../events/publishers/ticketUpdated"
 import { Ticket } from "../models/ticket"
@@ -9,6 +9,10 @@ export const updateTicketByIdHandler = async (req: Request, res: Response) => {
 
     if (!ticket) {
         throw new NotFoundError()
+    }
+
+    if (ticket.orderId) {
+        throw new BadRequestError("Cannot edit ticket")
     }
 
     if (ticket?.userId != req._currentUser?.id) {

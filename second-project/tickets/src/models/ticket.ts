@@ -4,11 +4,12 @@ import { updateIfCurrentPlugin } from "mongoose-update-if-current"
 interface ITicket {
     userId: string,
     title: string,
-    price: number,
+    price: number
 }
 
 interface ITicketDoc extends Document, ITicket {
-    version: number
+    version: number,
+    orderId?: string
 }
 
 interface ITicketModel extends Model<ITicketDoc> {
@@ -27,6 +28,9 @@ const ticketSchema = new moongose.Schema({
     userId: {
         type: String,
         required: true
+    },
+    orderId: {
+        type: String
     }
 }, {
     toJSON: {

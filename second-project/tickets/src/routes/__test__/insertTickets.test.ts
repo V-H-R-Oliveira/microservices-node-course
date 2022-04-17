@@ -1,9 +1,6 @@
-import { describe, test, expect, jest } from "@jest/globals"
+import { describe, test, expect } from "@jest/globals"
 import request from "supertest"
 import { stan } from "../../natsClient"
-
-jest.mock("../../natsClient")
-
 import { app } from "../../app"
 
 describe("Testing /ap1/v1/tickets endpoint", () => {
@@ -12,7 +9,7 @@ describe("Testing /ap1/v1/tickets endpoint", () => {
     const baseEndpoint = "/api/v1/tickets"
     const cookies = globalThis.signup()
 
-    test("Has a route handler listening to /api/tickets for post requests", async () => {
+    test("Should have a route handler listening to /api/tickets for post requests", async () => {
         const response = await agent.post(baseEndpoint).send({})
         expect(response.status).not.toEqual(404)
     })
@@ -21,7 +18,7 @@ describe("Testing /ap1/v1/tickets endpoint", () => {
         return agent.post(baseEndpoint).send({}).expect(401)
     })
 
-    test("Returns a status other than 401 if the user is signed in", async () => {
+    test("Should return a status other than 401 if the user is signed in", async () => {
         const response = await agent.post(baseEndpoint).set("Cookie", cookies).send({})
         expect(response.status).not.toEqual(401)
     })
@@ -29,7 +26,7 @@ describe("Testing /ap1/v1/tickets endpoint", () => {
     test.concurrent.each([
         [ { price: 1.25 } ],
         [ { title: "", price: 1.5 } ]
-    ])("Returns a status 400 if the title of (%o) is invalid", (payload) => {
+    ])("Should return a status 400 if the title of (%o) is invalid", (payload) => {
         return agent.post(baseEndpoint).set("Cookie", cookies).send(payload).expect(400)
     })
 
@@ -37,7 +34,7 @@ describe("Testing /ap1/v1/tickets endpoint", () => {
         [ { title: "test", price: -1.25 } ],
         [ { title: "test", price: 0 } ],
         [ { title: "test" } ]
-    ])("Returns a status 400 if the price of (%o) is invalid", (payload) => {
+    ])("Should return a status 400 if the price of (%o) is invalid", (payload) => {
         return agent.post(baseEndpoint).set("Cookie", cookies).send(payload).expect(400)
     })
 
@@ -45,11 +42,11 @@ describe("Testing /ap1/v1/tickets endpoint", () => {
         [ { title: "test", price: 1.23 } ],
         [ { title: "new ticket", price: 0.01 } ],
         [ { title: "testing ticket", price: 1000.52 } ]
-    ])("Creates a ticket with valid inputs (%o)", (payload) => {
+    ])("Should create a ticket with valid inputs (%o)", (payload) => {
         return agent.post(baseEndpoint).set("Cookie", cookies).send(payload).expect(201)
     })
 
-    test("Stan client must be called only once", async () => {
+    test("Stan client publish method should be called only once", async () => {
         await agent.post(baseEndpoint).set("Cookie", cookies).send({ title: "test", price: 1 }).expect(201)
         expect(stan.client.publish).toHaveBeenCalledTimes(1)
     })
