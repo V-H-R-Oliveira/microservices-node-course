@@ -16,8 +16,6 @@ spec:
         - name: orders
           image: vitor/orders
           env:
-            - name: "EXPIRATION_WINDOW_SECONDS"
-              value: "900"
             - name: "JWT_KEY"
               valueFrom:
                 secretKeyRef:
