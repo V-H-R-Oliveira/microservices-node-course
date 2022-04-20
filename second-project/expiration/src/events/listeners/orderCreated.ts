@@ -8,10 +8,10 @@ export default class OrderCreatedListener extends Listener<IOrderCreatedEvent> {
     readonly subject = Subjects.ORDER_CREATED
 
     async onMessage(data: IOrderCreatedEvent["data"], msg: Message) {
-        // const delay = new Date(data.expiresAt).getTime() - Date.now()
-        // console.info(`Waiting ${delay} ms to process the job`)
+        const delay = new Date(data.expiresAt).getTime() - Date.now()
+        console.info(`Waiting ${delay} ms to process the job`)
 
-        await expirationQueue.add({ orderId: data.id }, /*{ delay }*/)
+        await expirationQueue.add({ orderId: data.id }, { delay })
         msg.ack()
     }
 }
