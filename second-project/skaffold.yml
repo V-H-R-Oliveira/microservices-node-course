@@ -51,6 +51,16 @@ build:
         manual:
           - dest: "."
             src: "src/**/*.ts"
+    - image: vitor/payments
+      context: payments
+      docker:
+        dockerfile: Dockerfile
+        noCache: false
+        squash: false
+      sync:
+        manual:
+          - dest: "."
+            src: "src/**/*.ts"
     - image: vitor/client
       context: client
       docker:
