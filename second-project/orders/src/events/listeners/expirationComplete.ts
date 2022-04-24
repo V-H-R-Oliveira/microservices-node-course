@@ -15,6 +15,10 @@ export default class ExpirationCompleteListener extends Listener<IExpirationComp
             throw new Error(`Order ${data.orderId} not found`)
         }
 
+        if (order.status == OrderStatus.COMPLETE) {
+            return msg.ack()
+        }
+
         await order.set({ status: OrderStatus.CANCELLED }).save()
 
         const orderCancelledPublisher = new OrderCancelledPublisher(this.client)

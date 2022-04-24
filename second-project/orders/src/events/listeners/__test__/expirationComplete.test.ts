@@ -64,4 +64,14 @@ describe("Testing Expiration Complete Listener", () => {
         await listener.onMessage(data, message)
         expect(stan.client.publish).toHaveBeenCalledTimes(1)
     })
+
+    test("Should ack the message if the order status is 'COMPLETE' without cancel it", async () => {
+        const { listener, data, message } = await listenerSetup()
+        const order = await Order.findById(data.orderId)
+        await order?.set({ status: OrderStatus.COMPLETE }).save()
+        await listener.onMessage(data, message)
+
+        expect(message.ack).toHaveBeenCalledTimes(1)
+        expect(order?.status).not.toBe(OrderStatus.CANCELLED)
+    })
 })
