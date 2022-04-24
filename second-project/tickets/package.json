@@ -18,7 +18,7 @@
   "author": "Vitor Oliveira",
   "license": "ISC",
   "dependencies": {
-    "@vhr_gittix/common-lib": "^0.0.12",
+    "@vhr_gittix/common-lib": "^0.0.14",
     "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "express": "^4.17.2",
