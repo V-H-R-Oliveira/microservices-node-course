@@ -14,7 +14,7 @@ router.post(
     body("title").trim().notEmpty().withMessage("Title is required"),
     body("price")
         .isFloat({ gt: 0 })
-        .withMessage("Price is required"),
+        .withMessage("Price must be a positive number"),
     validateRequestHandler,
     insertTicketHandler
 )
@@ -35,7 +35,7 @@ router.put(
     body("title").trim().notEmpty().withMessage("Title is required"),
     body("price")
         .isFloat({ gt: 0 })
-        .withMessage("Price is required"),
+        .withMessage("Price must be a positive number"),
     validateRequestHandler,
     updateTicketByIdHandler
 )
