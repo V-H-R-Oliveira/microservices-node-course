@@ -7,23 +7,26 @@ export interface IUseRequest {
     url: string,
     method: Method,
     data: object | null
-    onSuccess?: () => Promise<any>
+    onSuccess?: (data?: any | null) => Promise<any>
 }
 
 const useRequest = ({ url, method, data, onSuccess }: IUseRequest) => {
     const [errors, setErrors] = useState<ReactElement | null>(null)
     const httpClient = buildHttpClient()
 
-    const doRequest = async () => {
+    const doRequest = async (props={}) => {
         try {
             const response = await httpClient.request({
                 method,
                 url,
-                data
+                data: {
+                    ...data,
+                    ...props
+                }
             })
 
             if (onSuccess) {
-                await onSuccess()
+                await onSuccess(response.data)
             }
 
             setErrors(null)

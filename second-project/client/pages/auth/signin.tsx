@@ -1,5 +1,5 @@
-import { NextPage } from 'next'
 import Router from 'next/router'
+import { NextPage } from 'next/types'
 import AuthForm from '../../components/AuthForm'
 import { IUseRequest } from "../../hooks/useRequest"
 

@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { NextPage } from 'next'
 import Router from 'next/router'
+import { NextPage } from 'next/types'
 import { useEffect } from "react"
 import useRequest from "../../hooks/useRequest"
 

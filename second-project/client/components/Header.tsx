@@ -6,6 +6,8 @@ const Header: FC<ICurrentUser> = ({ currentUser }) => {
     const links = [
         !currentUser && { label: "Signup", href: "/auth/signup" },
         !currentUser && { label: "Signin", href: "/auth/signin" },
+        currentUser && { label: "Sell Tickets", href: "/tickets/new" },
+        currentUser && { label: "My Orders", href: "/orders" },
         currentUser && { label: "Signout", href: "/auth/signout" }
     ].filter((link) => link).map((link, key) => {
         return (

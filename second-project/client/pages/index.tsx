@@ -1,15 +1,23 @@
+import { AxiosInstance } from 'axios'
 import { NextPage, NextPageContext } from 'next'
-import { ICurrentUser } from '../components/ICommonTypes'
-import { buildHttpClient } from '../http/client'
+import { ICurrentUser, ITicket } from '../components/ICommonTypes'
+import TicketsTable from '../components/TicketsTable'
 
-const Home: NextPage<ICurrentUser> = ({ currentUser }) => {
-  return currentUser ? <div>You are signin</div> : <div>You are not signin</div>
+interface IHome extends ICurrentUser {
+  tickets: ITicket[]
 }
 
-Home.getInitialProps = async (ctx: NextPageContext) => {
-  const httpClient = buildHttpClient(ctx)
-  const response = await httpClient.get("/api/v1/users/current-user")
-  return { currentUser: response.data }
+const Home: NextPage<IHome> = ({ tickets, currentUser }) => {
+  if (currentUser) {
+    return <TicketsTable tickets={tickets} />
+  }
+
+  return <div>You are not signin</div>
+}
+
+Home.getInitialProps = async (_ctx: NextPageContext, client: AxiosInstance, currentUser: ICurrentUser) => {
+  const response = await client.get("/api/v1/tickets")
+  return { tickets: response.data.tickets, currentUser }
 }
 
 export default Home

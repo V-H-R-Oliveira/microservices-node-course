@@ -1,4 +1,4 @@
-import { ChangeEvent, ChangeEventHandler, FC, FormEvent, FormEventHandler, useState } from 'react'
+import { ChangeEvent, ChangeEventHandler, FC, FormEventHandler, useState } from 'react'
 import useRequest, { IUseRequest } from "../hooks/useRequest"
 
 interface IAuthState {
@@ -6,13 +6,13 @@ interface IAuthState {
     password: string
 }
 
-interface IFormProps {
+interface IAuthForm {
     formTitle: string
     submitFormBtnLabel: string
     useRequestProps: IUseRequest
 }
 
-const AuthForm: FC<IFormProps> = ({ formTitle, submitFormBtnLabel, useRequestProps }) => {
+const AuthForm: FC<IAuthForm> = ({ formTitle, submitFormBtnLabel, useRequestProps }) => {
     const [formState, setFormState] = useState<IAuthState>({ email: "", password: "" })
     const { doRequest, errors } = useRequest({ ...useRequestProps, data: formState })
 
@@ -23,7 +23,7 @@ const AuthForm: FC<IFormProps> = ({ formTitle, submitFormBtnLabel, useRequestPro
         })
     }
 
-    const onSubmitHandler: FormEventHandler<HTMLFormElement> = async (event: FormEvent<HTMLFormElement>) => {
+    const onSubmitHandler: FormEventHandler<HTMLFormElement> = async (event) => {
         event.preventDefault()
         await doRequest()
     }
