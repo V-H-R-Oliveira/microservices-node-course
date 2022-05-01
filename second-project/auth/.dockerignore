@@ -3,4 +3,5 @@ package-lock.json
 .eslintrc.cjs
 .gitignore
 .vscode
+.jest.config.cjs
 coverage
