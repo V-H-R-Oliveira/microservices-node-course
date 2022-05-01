@@ -18,7 +18,7 @@
   "author": "Vitor Oliveira",
   "license": "ISC",
   "dependencies": {
-    "@vhr_gittix/common-lib": "^0.0.13",
+    "@vhr_gittix/common-lib": "^0.0.15",
     "bull": "^4.8.1",
     "node-nats-streaming": "^0.2.6"
   },
