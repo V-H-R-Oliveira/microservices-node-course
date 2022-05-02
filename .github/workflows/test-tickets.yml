@@ -23,14 +23,5 @@ jobs:
       - uses: actions/checkout@v3
 
       # Runs a single command using the runners shell
-      - name: Run auth service tests
-        run: cd second-project/auth && npm install --silent && npm run test
-
       - name: Run tickets service tests
         run: cd second-project/tickets && npm install --silent && npm run test
-
-      - name: Run orders service tests
-        run: cd second-project/orders && npm install --silent && npm run test
-
-      - name: Run expiration service tests
-        run: cd second-project/expiration && npm install --silent && npm run test
