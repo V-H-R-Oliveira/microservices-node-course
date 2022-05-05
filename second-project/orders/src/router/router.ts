@@ -35,7 +35,7 @@ router.get(
     fetchOrderById
 )
 
-router.patch(
+router.post(
     "/:id",
     authHandler,
     param("id")

@@ -6,7 +6,6 @@ import OrderCreatedPublisher from "../events/publishers/orderCreated"
 import { stan } from "../natsClient"
 import { EXPIRATION_WINDOW_SECONDS } from "../constants"
 
-
 const createOrderHandler = async (req: Request, res: Response) => {
     const ticket = await Ticket.findById(req.body.ticketId)
 

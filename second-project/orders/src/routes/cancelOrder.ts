@@ -4,7 +4,7 @@ import { Order } from "../models/order"
 import OrderCancelledPublisher from "../events/publishers/orderCancelled"
 import { stan } from "../natsClient"
 
-const cancelOrderHandler = async(req: Request, res: Response) => {
+const cancelOrderHandler = async (req: Request, res: Response) => {
     const order = await Order.findById(req.params.id).populate("ticket")
 
     if (!order) {
@@ -14,6 +14,10 @@ const cancelOrderHandler = async(req: Request, res: Response) => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     if (order.userId != req._currentUser!.id!) {
         throw new AuthError("Cannot access other user orders")
+    }
+
+    if (order.status == OrderStatus.COMPLETE) {
+        throw new Error("Cannot cancel a complete order")
     }
 
     order.status = OrderStatus.CANCELLED

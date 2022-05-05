@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { AuthError, NotFoundError } from "@vhr_gittix/common-lib"
 import { Order } from "../models/order"
 
-const fetchOrderById = async(req: Request, res: Response) => {
+const fetchOrderById = async (req: Request, res: Response) => {
     const order = await Order.findById(req.params.id).populate("ticket")
 
     if (!order) {
