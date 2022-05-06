@@ -10,6 +10,7 @@ interface IOrder {
     status: OrderStatus,
     expiresAt: Date,
     ticket: ITicketDoc
+    refundId?: string
 }
 
 interface IOrderDoc extends Document, IOrder {
@@ -33,6 +34,9 @@ const orderSchema = new moongose.Schema({
     userId: {
         type: String,
         required: true
+    },
+    refundId: {
+        type: String
     },
     ticket: {
         type: Schema.Types.ObjectId,

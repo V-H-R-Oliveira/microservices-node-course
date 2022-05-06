@@ -20,12 +20,10 @@ const cancelOrderHandler = async (req: Request, res: Response) => {
         throw new Error("Cannot cancel a complete order")
     }
 
-    order.status = OrderStatus.CANCELLED
-    await order.save()
-
+    await order.set({ status: OrderStatus.CANCELLED }).save()
     const publisher = new OrderCancelledPublisher(stan.client)
 
-    publisher.publish({
+    await publisher.publish({
         id: order.id,
         version: order.version,
         ticket: {
