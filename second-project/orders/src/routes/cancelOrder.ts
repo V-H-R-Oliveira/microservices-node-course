@@ -16,16 +16,14 @@ const cancelOrderHandler = async (req: Request, res: Response) => {
         throw new AuthError("Cannot access other user orders")
     }
 
-    if (order.status == OrderStatus.COMPLETE) {
-        throw new Error("Cannot cancel a complete order")
+    if (order.status == OrderStatus.COMPLETE || order.status == OrderStatus.CANCELLED) {
+        throw new Error("Cannot cancel the order")
     }
 
-    order.status = OrderStatus.CANCELLED
-    await order.save()
-
+    await order.set({ status: OrderStatus.CANCELLED }).save()
     const publisher = new OrderCancelledPublisher(stan.client)
 
-    publisher.publish({
+    await publisher.publish({
         id: order.id,
         version: order.version,
         ticket: {

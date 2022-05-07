@@ -6,7 +6,7 @@ import { Payment } from "../models/payment"
 import { stan } from "../natsClient"
 import { stripeClient } from "../stripeClient"
 
-const createChargeHandler = async(req: Request, res: Response) => {
+const createChargeHandler = async (req: Request, res: Response) => {
     const order = await Order.findById(req.body.orderId)
 
     if (!order) {

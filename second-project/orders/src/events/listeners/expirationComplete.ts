@@ -22,6 +22,7 @@ export default class ExpirationCompleteListener extends Listener<IExpirationComp
         await order.set({ status: OrderStatus.CANCELLED }).save()
 
         const orderCancelledPublisher = new OrderCancelledPublisher(this.client)
+
         await orderCancelledPublisher.publish({
             id: order.id,
             version: order.version,
