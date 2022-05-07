@@ -36,7 +36,7 @@ router.get(
 )
 
 router.post(
-    "/:id",
+    "/cancel/:id",
     authHandler,
     param("id")
         .notEmpty()
