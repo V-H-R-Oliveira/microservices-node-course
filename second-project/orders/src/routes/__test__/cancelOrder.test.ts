@@ -67,4 +67,14 @@ describe("Testing PATCH /api/v1/orders/:id endpoint", () => {
 
         return agent.post(`${baseEndpoint}/${order.id}`).set("Cookie", cookies).expect(500)
     })
+
+    test("Should return status 500 if we try to cancel a cancelled order", async () => {
+        const ticket = await globalThis.buildTicket()
+        const { body: order } = await agent.post(baseEndpoint).set("Cookie", cookies).send({ ticketId: ticket.id }).expect(201)
+
+        const savedOrder = await Order.findById(order.id)
+        await savedOrder?.set({ status: OrderStatus.CANCELLED }).save()
+
+        return agent.post(`${baseEndpoint}/${order.id}`).set("Cookie", cookies).expect(500)
+    })
 })
