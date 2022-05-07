@@ -72,4 +72,25 @@ describe("Testing GET /api/v1/payments/refunds/:id endpoint", () => {
         createChargeSpy.mockRestore()
         retrieveRefundSpy.mockRestore()
     })
+
+    test("Should return the correct refund data after fetching the refund", async () => {
+        const createChargeSpy = jest.spyOn<any, any>(stripeClient.charges, "create").mockResolvedValue({ id: fakeChargeId })
+        const retrieveRefundSpy = jest.spyOn<any, any>(stripeClient.refunds, "retrieve").mockResolvedValue(mockRefundData)
+
+        const userId = new Types.ObjectId().toString()
+        const userCookies = globalThis.signup(userId)
+        const order = await globalThis.createOrder(userId)
+        await agent.post(baseEndpoint).set("Cookie", userCookies).send({ orderId: order.id, token: "tok_visa" }).expect(201)
+
+        await Refund.build({ orderId: order.id, refundId: fakeRefundId }).save()
+        const { body: refund } = await agent.get(`${baseEndpoint}/refunds/${order.id}`).set("Cookie", userCookies).expect(200)
+
+        expect(refund).toMatchObject({
+            ...mockRefundData,
+            amount: mockRefundData.amount / 100
+        })
+
+        createChargeSpy.mockRestore()
+        retrieveRefundSpy.mockRestore()
+    })
 })
