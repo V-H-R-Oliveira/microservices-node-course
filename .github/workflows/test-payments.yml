@@ -8,16 +8,16 @@ on:
   push:
     branches: [ master ]
     paths:
-      - "payments/**"
+      - "second-project/payments/**"
   pull_request:
     branches: [ master ]
     paths:
-      - "payments/**"
+      - "second-project/payments/**"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  build:
+  test:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -28,6 +28,7 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run payments service tests
+        working-directory: second-project/payments
         env:
           STRIPE_KEY: ${{secrets.STRIPE_KEY}}
-        run: cd second-project/payments && npm install --silent && npm run test
+        run: npm install --silent && npm run test
