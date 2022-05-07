@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { describe, test, expect, jest } from "@jest/globals"
 import { Types } from "mongoose"
+import request from "supertest"
 import { Message } from "node-nats-streaming"
 import { IOrderCancelledEvent, OrderStatus } from "@vhr_gittix/common-lib"
 import { stan } from "../../../natsClient"
@@ -9,9 +10,12 @@ import OrderCancelledListener from "../orderCancelled"
 import { stripeClient } from "../../../stripeClient"
 import { Refund } from "../../../models/refund"
 import { Payment } from "../../../models/payment"
+import { app } from "../../../app"
 
 describe("Testing Order Cancelled Listener", () => {
     const fakeRefundId = "re_3KwG7GGDSCqsBuxW02PSAclB"
+    const agent = request(app)
+    const baseEndpoint = "/api/v1/payments"
 
     const listenerSetup = async () => {
         const listener = new OrderCancelledListener(stan.client)
@@ -48,8 +52,6 @@ describe("Testing Order Cancelled Listener", () => {
         expect(order?.status).toBe(OrderStatus.CANCELLED)
     })
 
-    test.todo("Should cancel the chargeId")
-
     test("Should make a refund if a payment was made", async () => {
         const refundSpy = jest.spyOn<any, any>(stripeClient.refunds, "create").mockResolvedValue({ id: fakeRefundId })
         const { listener, data, message } = await listenerSetup()
@@ -63,6 +65,22 @@ describe("Testing Order Cancelled Listener", () => {
         expect(refund?.orderId).toBe(data.id)
 
         refundSpy.mockRestore()
+    })
+
+    test("Should make a real refund if a real payment was made", async () => {
+        const userId = new Types.ObjectId().toString()
+
+        const userCookies = globalThis.signup(userId)
+        const order = await globalThis.createOrder(userId)
+
+        await agent.post(baseEndpoint).set("Cookie", userCookies).send({ orderId: order.id, token: "tok_visa" }).expect(201)
+
+        const { listener, data, message } = await listenerSetup()
+
+        data.id = order.id
+
+        await listener.onMessage(data, message)
+        return agent.get(`${baseEndpoint}/refunds/${order.id}`).set("Cookie", userCookies).expect(200)
     })
 
     test("Should publish a refund:created after a successful refund", async () => {
