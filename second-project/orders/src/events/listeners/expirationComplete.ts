@@ -15,7 +15,7 @@ export default class ExpirationCompleteListener extends Listener<IExpirationComp
             throw new Error(`Order ${data.orderId} not found`)
         }
 
-        if (order.status == OrderStatus.COMPLETE) {
+        if (order.status == OrderStatus.COMPLETE || order.status == OrderStatus.CANCELLED) {
             return msg.ack()
         }
 

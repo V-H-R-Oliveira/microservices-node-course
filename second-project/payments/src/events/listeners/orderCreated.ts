@@ -15,8 +15,6 @@ export default class OrderCreatedListener extends Listener<IOrderCreatedEvent> {
             userId: data.userId
         }).save()
 
-        // publish an awaiting-payment event
-
         msg.ack()
     }
 }

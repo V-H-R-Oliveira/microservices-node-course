@@ -1,6 +1,8 @@
 import { Listener, Subjects, IPaymentCreated, OrderStatus } from "@vhr_gittix/common-lib"
 import { Message } from "node-nats-streaming"
 import { Order } from "../../models/order"
+import { stan } from "../../natsClient"
+import OrderCompletePublisher from "../publishers/orderComplete"
 import { QUEUE_GROUP_NAME } from "./queueGroupName"
 
 export default class PaymentCreatedListener extends Listener<IPaymentCreated> {
@@ -14,7 +16,15 @@ export default class PaymentCreatedListener extends Listener<IPaymentCreated> {
             throw new Error(`Order ${data.orderId} not found`)
         }
 
-        await order.set({ status: OrderStatus.COMPLETE }).save()
+        const updatedOrder = await order.set({ status: OrderStatus.COMPLETE }).save()
+
+        const orderCompletePublisher = new OrderCompletePublisher(stan.client)
+
+        await orderCompletePublisher.publish({
+            id: updatedOrder.id,
+            version: updatedOrder.version
+        })
+
         msg.ack()
     }
 }

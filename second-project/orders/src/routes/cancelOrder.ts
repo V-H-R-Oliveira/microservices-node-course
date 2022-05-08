@@ -16,7 +16,7 @@ const cancelOrderHandler = async (req: Request, res: Response) => {
         throw new AuthError("Cannot access other user orders")
     }
 
-    if (order.status == OrderStatus.COMPLETE || order.status == OrderStatus.CANCELLED) {
+    if (order.status == OrderStatus.CANCELLED) {
         throw new Error("Cannot cancel the order")
     }
 
