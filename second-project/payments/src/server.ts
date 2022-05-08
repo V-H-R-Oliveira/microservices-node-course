@@ -5,6 +5,7 @@ import { app } from "./app"
 import { stan } from "./natsClient"
 import OrderCreatedListener from "./events/listeners/orderCreated"
 import OrderCancelledListener from "./events/listeners/orderCancelled"
+import OrderCompleteListener from "./events/listeners/orderComplete"
 
 const port = process.env?.PORT ?? 8080
 
@@ -45,9 +46,11 @@ const bootstrap = async () => {
 
     const orderCreatedListener = new OrderCreatedListener(stan.client)
     const orderCancelledListener = new OrderCancelledListener(stan.client)
+    const orderCompleteListener = new OrderCompleteListener(stan.client)
 
     orderCreatedListener.listen()
     orderCancelledListener.listen()
+    orderCompleteListener.listen()
 
     await mongoose.connect(process.env.MONGO_URI)
     console.log("Successfully connected to mongodb")
