@@ -17,6 +17,7 @@ const OrdersTable: FC<IOrdersTable> = ({ orders }) => {
                             <th scope="col" className="text-center">Title</th>
                             <th scope="col" className="text-center">Price</th>
                             <th scope="col" className="text-center">Status</th>
+                            <th scope="col" className="text-center">Refunded</th>
                             <th scope="col" className="text-center">Link</th>
                         </tr>
                     </thead>
