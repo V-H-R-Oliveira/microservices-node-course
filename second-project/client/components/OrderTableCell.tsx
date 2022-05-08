@@ -25,7 +25,6 @@ const OrderTableCell: FC<IOrderTableCell> = ({ order }) => {
                         <a className="nav-link">Cancel Order</a>
                     </Link>
                 }
-
             </td>
         </tr>
     )

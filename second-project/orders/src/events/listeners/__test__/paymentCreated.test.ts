@@ -59,6 +59,12 @@ describe("Testing Payment Created Listener", () => {
         expect(order?.status).toBe(OrderStatus.COMPLETE)
     })
 
+    test("Should publish an order:complete event", async () => {
+        const { listener, data, message } = await listenerSetup()
+        await listener.onMessage(data, message)
+        expect(stan.client.publish).toHaveBeenCalledTimes(1)
+    })
+
     test("Should ack the message", async () => {
         const { listener, data, message } = await listenerSetup()
         await listener.onMessage(data, message)
