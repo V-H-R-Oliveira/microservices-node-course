@@ -31,6 +31,15 @@ describe("Testing POST /api/v1/payments endpoint", () => {
         return agent.post(baseEndpoint).set("Cookie", userCookies).send({ orderId: order.id, token: "1234" }).expect(400)
     })
 
+    test("Should return a 400 status if the user tries to double pay the order", async() => {
+        const userId = new Types.ObjectId().toString()
+        const userCookies = globalThis.signup(userId)
+        const order = await globalThis.createOrder(userId)
+
+        await order.set({ status: OrderStatus.COMPLETE }).save()
+        return agent.post(baseEndpoint).set("Cookie", userCookies).send({ orderId: order.id, token: "1234" }).expect(400)
+    })
+
     test("Should return a 201 status if the order was successfuly charged", async() => {
         const spy = jest.spyOn<any, any>(stripeClient.charges, "create").mockResolvedValue({ id: fakeChargeId })
 
