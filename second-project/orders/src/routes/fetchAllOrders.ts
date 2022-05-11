@@ -6,6 +6,7 @@ const fetchAllOrdersHandler = async (req: Request, res: Response) => {
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         userId: req._currentUser!.id!
     }).populate("ticket")
+
     res.json(orders)
 }
 

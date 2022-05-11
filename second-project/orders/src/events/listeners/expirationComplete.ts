@@ -12,7 +12,7 @@ export default class ExpirationCompleteListener extends Listener<IExpirationComp
         const order = await Order.findById(data.orderId).populate("ticket")
 
         if (!order) {
-            throw new Error(`Order ${data.orderId} not found`)
+            throw new Error("Order not found")
         }
 
         if (order.status == OrderStatus.COMPLETE || order.status == OrderStatus.CANCELLED) {
@@ -20,7 +20,6 @@ export default class ExpirationCompleteListener extends Listener<IExpirationComp
         }
 
         await order.set({ status: OrderStatus.CANCELLED }).save()
-
         const orderCancelledPublisher = new OrderCancelledPublisher(this.client)
 
         await orderCancelledPublisher.publish({

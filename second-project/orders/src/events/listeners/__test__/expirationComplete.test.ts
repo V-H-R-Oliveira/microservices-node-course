@@ -49,7 +49,7 @@ describe("Testing Expiration Complete Listener", () => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             expect(err).toBeInstanceOf(Error)
-            expect(err.message).toBe(`Order ${data.orderId} not found`)
+            expect(err.message).toBe("Order not found")
         }
     })
 
@@ -73,5 +73,14 @@ describe("Testing Expiration Complete Listener", () => {
 
         expect(message.ack).toHaveBeenCalledTimes(1)
         expect(order?.status).not.toBe(OrderStatus.CANCELLED)
+    })
+
+    test("Should ack the message if the order status is 'CANCELLED'", async () => {
+        const { listener, data, message } = await listenerSetup()
+        const order = await Order.findById(data.orderId)
+
+        await order?.set({ status: OrderStatus.CANCELLED }).save()
+        await listener.onMessage(data, message)
+        expect(message.ack).toHaveBeenCalledTimes(1)
     })
 })
