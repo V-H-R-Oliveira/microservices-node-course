@@ -32,7 +32,7 @@ describe("Test signin route", () => {
         expect(hasExpectedErrorMessage).toBeTruthy()
     })
 
-    test("It should set the response header 'Set-Cookie'", async () => {
+    test("Should set the response header 'Set-Cookie'", async () => {
         const response = await agent
             .post(endpoint)
             .send(user)

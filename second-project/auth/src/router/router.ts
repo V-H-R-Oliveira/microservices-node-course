@@ -5,7 +5,7 @@ import { currentUserHandler } from "../routes/currentUser"
 
 import { signInHandler } from "../routes/signin"
 import { signOutHandler } from "../routes/signout"
-import { signUpHandler } from "../routes/signup"
+import { signupHandler } from "../routes/signup"
 
 const router = Router({ strict: true, caseSensitive: true })
 
@@ -26,7 +26,7 @@ router.post(
     body("email").isEmail().normalizeEmail().withMessage("Email must be valid"),
     body("password").trim().isLength({ min: 4, max: 20 }).withMessage("Password must be between 4 and 20 characters"),
     validateRequestHandler,
-    signUpHandler
+    signupHandler
 )
 
 export { router }
