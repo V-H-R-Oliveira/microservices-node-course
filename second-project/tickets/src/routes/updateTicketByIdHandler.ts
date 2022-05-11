@@ -19,12 +19,10 @@ export const updateTicketByIdHandler = async (req: Request, res: Response) => {
         throw new AuthError("Unauthorized update")
     }
 
-    ticket.set({
+    await ticket.set({
         title: req.body.title,
         price: req.body.price
-    })
-
-    await ticket.save()
+    }).save()
 
     const publisher = new TicketUpdatedPublisher(stan.client)
 
