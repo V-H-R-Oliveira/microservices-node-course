@@ -11,12 +11,11 @@ describe("Test signup route", () => {
         [ { email: "valid@example.com", password: "P@ssw0rd" }, 201 ],
         [ { email: "invalid", password: "P@ssw0rd" }, 400 ],
         [ { email: "valid@example.com", password: "P" }, 400 ],
-        [ {  }, 400 ]
+        [ {}, 400 ]
     ])("When supplied with %j, it should return the status code %i", (payload, expectedStatusCode) => {
         return agent
             .post(endpoint)
             .send(payload)
-            .expect("Content-Type", /json/)
             .expect(expectedStatusCode)
     })
 
@@ -24,7 +23,6 @@ describe("Test signup route", () => {
         const payload = { email: "vitor@anycart.com", password: "1234" }
         const response = await agent
             .post(endpoint)
-            .set("Content-Type", "application/json")
             .send(payload)
 
         expect(response.body).toHaveProperty("id")
@@ -36,7 +34,6 @@ describe("Test signup route", () => {
 
         const response = await agent
             .post(endpoint)
-            .set("Content-Type", "application/json")
             .send(payload)
 
         expect(Array.isArray(response.body.errors)).toBeTruthy()
@@ -51,7 +48,6 @@ describe("Test signup route", () => {
     ])("When supplied with %j, it should return the error message of '%s'", async (payload, expectedErrorMessage) => {
         const response = await agent
             .post(endpoint)
-            .set("Content-Type", "application/json")
             .send(payload)
 
         const hasExpectedErrorMessage = response.body.errors
@@ -63,13 +59,11 @@ describe("Test signup route", () => {
         const payload = { email: "vitor@anycart.com", password: "1234" }
         await agent
             .post(endpoint)
-            .set("Content-Type", "application/json")
             .send(payload)
             .expect(201)
 
         const response = await agent
             .post(endpoint)
-            .set("Content-Type", "application/json")
             .send(payload)
             .expect(400)
 
@@ -82,7 +76,6 @@ describe("Test signup route", () => {
         const payload = { email: "vitor@anycart.com", password: "1234" }
         const response = await agent
             .post(endpoint)
-            .set("Content-Type", "application/json")
             .send(payload)
 
         expect(response.get("Set-Cookie")).toBeDefined()

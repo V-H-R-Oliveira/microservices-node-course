@@ -5,9 +5,7 @@ import { stan } from "../natsClient"
 
 export const insertTicketHandler = async (req: Request, res: Response) => {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    const ticket = Ticket.build({ userId: req._currentUser!.id!, ...req.body })
-    await ticket.save()
-
+    const ticket = await Ticket.build({ userId: req._currentUser!.id!, ...req.body }).save()
     const publisher = new TicketCreatedPublisher(stan.client)
 
     publisher.publish({

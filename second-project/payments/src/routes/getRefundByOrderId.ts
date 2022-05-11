@@ -24,7 +24,7 @@ const getRefundByOrderIdHandler = async (req: Request, res: Response) => {
     const stripeRefundData = await stripeClient.refunds.retrieve(refund.refundId)
 
     const response = {
-        amount: stripeRefundData.amount / 100,
+        amount: stripeRefundData.amount / 100, // from cents
         currency: stripeRefundData.currency,
         reason: stripeRefundData.reason,
         created: stripeRefundData.created

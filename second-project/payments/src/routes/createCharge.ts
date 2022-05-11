@@ -17,8 +17,8 @@ const createChargeHandler = async (req: Request, res: Response) => {
         throw new AuthError("Unauthorized access")
     }
 
-    if (order.status == OrderStatus.CANCELLED) {
-        throw new BadRequestError("Cannot pay a cancelled order")
+    if (order.status == OrderStatus.CANCELLED || order.status == OrderStatus.COMPLETE) {
+        throw new BadRequestError("Cannot pay the order")
     }
 
     const charge = await stripeClient.charges.create({

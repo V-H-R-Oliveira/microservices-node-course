@@ -6,12 +6,12 @@ describe("Test signout route", () => {
     const agent = request(app)
     const endpoint = "/api/v1/users/signout"
 
-    test("It should signout a logged in user", async () => {
+    test("Should return a 200 status after a successful signout", async () => {
         const cookies = await globalThis.signup()
         return agent.post(endpoint).set("Cookie", cookies).expect(200)
     })
 
-    test("It should signout a logged in user", async () => {
+    test("Should signout a logged in user", async () => {
         const cookies = await globalThis.signup()
         const signoutResponse = await agent.post(endpoint).set("Cookie", cookies)
         const [ signoutCookies ] = signoutResponse.get("Set-Cookie")

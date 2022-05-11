@@ -11,7 +11,7 @@ export default class RefundCreatedListener extends Listener<IRefundCreatedEvent>
         const order = await Order.findById(data.orderId)
 
         if (!order) {
-            throw new Error(`Order ${data.orderId} not found`)
+            throw new Error("Order not found")
         }
 
         await order.set({ refundId: data.refundId }).save()

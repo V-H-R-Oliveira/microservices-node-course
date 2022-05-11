@@ -58,7 +58,7 @@ describe("Testing Refund Created Listener", () => {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             expect(err).toBeInstanceOf(Error)
-            expect(err.message).toBe(`Order ${data.orderId} not found`)
+            expect(err.message).toBe("Order not found")
         }
     })
 

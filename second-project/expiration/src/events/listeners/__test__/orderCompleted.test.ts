@@ -1,27 +1,21 @@
 import { describe, test, expect, jest } from "@jest/globals"
-import { IOrderCreatedEvent } from "@vhr_gittix/common-lib"
+import { IOrderCompleteEvent } from "@vhr_gittix/common-lib"
 import { Message } from "node-nats-streaming"
 import { stan } from "../../../natsClient"
-import OrderCreatedListener from "../orderCreated"
+import OrderCompletedListener from "../orderCompleted"
 
-describe("Testing Order Created Listener", () => {
+describe("Testing Order Completed Listener", () => {
 
     const listenerSetup = () => {
-        const listener = new OrderCreatedListener(stan.client)
+        const listener = new OrderCompletedListener(stan.client)
         const dateNow = new Date()
         const delay = 10 / 60
 
         dateNow.setSeconds(dateNow.getSeconds() + delay)
 
-        const data: IOrderCreatedEvent["data"] = {
+        const data: IOrderCompleteEvent["data"] = {
             id: "1234",
-            userId: "456",
-            version: 0,
-            expiresAt: dateNow.toISOString(),
-            ticket: {
-                id: "1222",
-                price: 5.67
-            }
+            version: 0
         }
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment

@@ -22,15 +22,13 @@ const createOrderHandler = async (req: Request, res: Response) => {
     const expiresAt = new Date()
     expiresAt.setSeconds(expiresAt.getSeconds() + EXPIRATION_WINDOW_SECONDS)
 
-    const order = Order.build({
+    const order = await Order.build({
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         userId: req._currentUser!.id!,
         status: OrderStatus.CREATED,
         expiresAt,
         ticket
-    })
-
-    await order.save()
+    }).save()
 
     const publisher = new OrderCreatedPublisher(stan.client)
 

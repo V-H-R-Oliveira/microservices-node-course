@@ -11,7 +11,7 @@ export default class OrderCreatedListener extends Listener<IOrderCreatedEvent> {
         const delay = new Date(data.expiresAt).getTime() - Date.now()
         console.info(`Waiting ${delay} ms to process the job`)
 
-        await expirationQueue.add({ orderId: data.id }, { delay })
+        await expirationQueue.add({ orderId: data.id }, { delay, jobId: data.id })
         msg.ack()
     }
 }
