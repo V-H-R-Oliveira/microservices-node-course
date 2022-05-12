@@ -8,6 +8,11 @@ import OrderCancelledListener from "./events/listeners/orderCancelled"
 
 const port = process.env?.PORT ?? 8080
 
+const gracefulShutdown = async () => {
+    stan.client.close()
+    await Promise.all(mongoose.connections.map((conn) => conn.close()))
+}
+
 const bootstrap = async () => {
     if (!process.env?.JWT_KEY) {
         throw new Error("JWT_KEY must be defined")
@@ -29,31 +34,24 @@ const bootstrap = async () => {
         throw new DatabaseConnectionError()
     }
 
-    try {
-        await stan.connect(process.env.NATS_CLUSTER_ID, process.env.NATS_CLIENT_ID, process.env.NATS_URL)
+    await stan.connect(process.env.NATS_CLUSTER_ID, process.env.NATS_CLIENT_ID, process.env.NATS_URL)
 
-        stan.client.on("close", () => {
-            console.info("Closing NATS connection")
-            process.exit()
-        })
+    stan.client.on("close", () => {
+        console.info("Closing NATS connection")
+        process.exit()
+    })
 
-        process.on("SIGINT", stan.client.close)
-        process.on("SIGTERM", stan.client.close)
+    const orderCreatedListener = new OrderCreatedListener(stan.client)
+    const orderCancelledListener = new OrderCancelledListener(stan.client)
 
-        const orderCreatedListener = new OrderCreatedListener(stan.client)
-        const orderCancelledListener = new OrderCancelledListener(stan.client)
+    orderCreatedListener.listen()
+    orderCancelledListener.listen()
 
-        orderCreatedListener.listen()
-        orderCancelledListener.listen()
+    await mongoose.connect(process.env.MONGO_URI)
+    console.log("Successfully connected to mongodb")
 
-        await mongoose.connect(process.env.MONGO_URI)
-        console.log("Successfully connected to mongodb")
-        return
-
-    } catch (err) {
-        console.error("Failed to connect due error:", err)
-        throw new DatabaseConnectionError()
-    }
+    process.on("SIGINT", gracefulShutdown)
+    process.on("SIGTERM", gracefulShutdown)
 }
 
 app.listen(port, async () => {
