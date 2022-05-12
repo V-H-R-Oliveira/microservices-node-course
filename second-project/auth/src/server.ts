@@ -6,7 +6,6 @@ import { DatabaseConnectionError } from "@vhr_gittix/common-lib"
 const port = process.env?.PORT ?? 8080
 
 const gracefulShutdown = async () => {
-    console.info("Shutting down auth service...")
     await Promise.all(mongoose.connections.map(conn => conn.close()))
 }
 
