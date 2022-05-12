@@ -10,6 +10,11 @@ import PaymentCreatedListener from "./events/listeners/paymentCreated"
 
 const port = process.env?.PORT ?? 8080
 
+const gracefulShutdown = async () => {
+    stan.client.close()
+    await Promise.all(mongoose.connections.map((conn) => conn.close()))
+}
+
 const bootstrap = async () => {
     if (!process.env?.JWT_KEY) {
         throw new Error("JWT_KEY must be defined")
@@ -38,9 +43,6 @@ const bootstrap = async () => {
         process.exit()
     })
 
-    process.on("SIGINT", stan.client.close)
-    process.on("SIGTERM", stan.client.close)
-
     const ticketCreatedListener = new TicketCreatedListener(stan.client)
     const ticketUpdatedListener = new TicketUpdatedListener(stan.client)
     const expirationCompleteListener = new ExpirationCompleteListener(stan.client)
@@ -53,6 +55,9 @@ const bootstrap = async () => {
 
     await mongoose.connect(process.env.MONGO_URI)
     console.log("Successfully connected to mongodb")
+
+    process.on("SIGINT", gracefulShutdown)
+    process.on("SIGTERM", gracefulShutdown)
 }
 
 app.listen(port, async () => {
