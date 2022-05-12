@@ -5,19 +5,31 @@ import { DatabaseConnectionError } from "@vhr_gittix/common-lib"
 
 const port = process.env?.PORT ?? 8080
 
+const gracefulShutdown = async () => {
+    console.info("Shutting down auth service...")
+    await Promise.all(mongoose.connections.map(conn => conn.close()))
+}
+
 const bootstrap = async () => {
     if (!process.env?.JWT_KEY) {
         throw new Error("JWT_KEY must be defined")
     }
 
     try {
-        if (process.env?.MONGO_URI) {
-            await mongoose.connect(process.env.MONGO_URI)
-            console.log("Successfully connected to mongodb")
-            return
+        if (!process.env?.MONGO_URI) {
+            throw new DatabaseConnectionError()
         }
 
-        throw new DatabaseConnectionError()
+        await mongoose.connect(process.env.MONGO_URI)
+        console.log("Successfully connected to mongodb")
+
+        process.on("SIGTERM", async () => {
+            await gracefulShutdown()
+        })
+
+        process.on("SIGINT", async () => {
+            await gracefulShutdown()
+        })
     } catch (err) {
         console.error("Failed to connect due error:", err)
         throw new DatabaseConnectionError()
