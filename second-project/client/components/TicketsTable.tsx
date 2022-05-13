@@ -10,7 +10,7 @@ const TicketsTable: FC<ITicketsTable> = ({ tickets }) => {
     return (
         <div className="container">
             <h1 className="text-center my-2">Tickets</h1>
-            <div className="table-responsive-sm">
+            <div className="table-responsive">
                 <table className="table table-striped">
                     <thead>
                         <tr>

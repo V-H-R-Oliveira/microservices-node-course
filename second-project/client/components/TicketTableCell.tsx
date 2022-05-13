@@ -11,10 +11,15 @@ const TicketTableCell: FC<ITicketTableCell> = ({ ticket }) => {
         <tr>
             <td scope="row" className="text-center">{ticket.title}</td>
             <td scope="row" className="text-center">{ticket.price}</td>
-            <td scope="row" className="text-center">
-                <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
-                    <a className="nav-link">View Ticket</a>
-                </Link>
+            <td scope="row">
+                <div className="d-flex justify-content-center align-items-center">
+                    <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
+                        <a className="nav-link">View Ticket</a>
+                    </Link>
+                    <Link href="/tickets/edit/[ticketId]" as={`/tickets/edit/${ticket.id}`}>
+                        <a className="nav-link">Edit Ticket</a>
+                    </Link>
+                </div>
             </td>
         </tr>
     )
