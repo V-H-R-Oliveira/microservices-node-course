@@ -3,11 +3,11 @@ import { NextPage, NextPageContext } from "next/types"
 import { ICurrentUser, ITicket } from "../../components/ICommonTypes"
 import CreateTicket from "../../components/CreateTicket"
 
-interface ICreateOrderPage extends ICurrentUser {
+interface ICreateTicketPage extends ICurrentUser {
     ticket: ITicket
 }
 
-const CreateOrderPage: NextPage<ICreateOrderPage> = ({ ticket, currentUser }) => {
+const CreateTicketPage: NextPage<ICreateTicketPage> = ({ ticket, currentUser }) => {
     if (currentUser) {
         return <CreateTicket ticket={ticket} />
     }
@@ -15,9 +15,9 @@ const CreateOrderPage: NextPage<ICreateOrderPage> = ({ ticket, currentUser }) =>
     return <div>Not authorized</div>
 }
 
-CreateOrderPage.getInitialProps = async (ctx: NextPageContext, client: AxiosInstance, currentUser: ICurrentUser) => {
+CreateTicketPage.getInitialProps = async (ctx: NextPageContext, client: AxiosInstance, currentUser: ICurrentUser) => {
     const response = await client.get(`/api/v1/tickets/${ctx.query.ticketId}`)
     return { ticket: response.data, currentUser }
 }
 
-export default CreateOrderPage
+export default CreateTicketPage

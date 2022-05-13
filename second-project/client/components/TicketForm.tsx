@@ -1,26 +1,29 @@
-import Router from 'next/router'
-import { ChangeEvent, ChangeEventHandler, FC, FocusEventHandler, FormEvent, FormEventHandler, useState } from 'react'
-import useRequest from '../hooks/useRequest'
+import { ChangeEvent, ChangeEventHandler, FC, FocusEventHandler, FormEventHandler, useState } from 'react'
+import useRequest, { IUseRequest } from "../hooks/useRequest"
+import { ITicket } from './ICommonTypes'
 
 interface ITicketFormState {
     title: string,
     price: string
 }
 
-const CreateTicketForm: FC = () => {
-    const [formState, setFormState] = useState<ITicketFormState>({ title: "", price: "" })
-    const { doRequest, errors } = useRequest({ url: "/api/v1/tickets", method: "POST", data: formState, onSuccess: () => Router.push("/") })
+interface ITicketForm {
+    formTitle: string
+    submitFormBtnLabel: string
+    useRequestProps: IUseRequest,
+    ticket?: ITicket
+}
+
+const TicketForm: FC<ITicketForm> = ({ formTitle, submitFormBtnLabel, useRequestProps, ticket }) => {
+    const initialState: ITicketFormState = { title: ticket?.title ?? "", price: ticket?.price?.toString() ?? "" }
+    const [formState, setFormState] = useState<ITicketFormState>(initialState)
+    const { doRequest, errors } = useRequest({ ...useRequestProps, data: formState })
 
     const onChangeHandler: ChangeEventHandler = (event: ChangeEvent<HTMLFormElement>) => {
         setFormState({
             ...formState,
             [event.target.name]: event.target.value
         })
-    }
-
-    const onSubmitHandler: FormEventHandler<HTMLFormElement> = async (event) => {
-        event.preventDefault()
-        await doRequest()
     }
 
     const onBlurHandler: FocusEventHandler<HTMLInputElement> = async () => {
@@ -36,9 +39,14 @@ const CreateTicketForm: FC = () => {
         })
     }
 
+    const onSubmitHandler: FormEventHandler<HTMLFormElement> = async (event) => {
+        event.preventDefault()
+        await doRequest()
+    }
+
     return (
         <>
-            <h1 className='text-center my-2'>Create a new ticket</h1>
+            <h1 className='text-center my-2'>{formTitle}</h1>
 
             <form onSubmit={onSubmitHandler}>
                 <div className='form-group'>
@@ -54,10 +62,10 @@ const CreateTicketForm: FC = () => {
                         value={formState.price} onChange={onChangeHandler} onBlur={onBlurHandler} required />
                 </div>
                 {errors}
-                <button className='btn btn-primary d-block my-0 mx-auto my-2'>Create</button>
+                <button className='btn btn-primary d-block my-0 mx-auto my-2'>{submitFormBtnLabel}</button>
             </form>
         </>
     )
 }
 
-export default CreateTicketForm
+export default TicketForm
