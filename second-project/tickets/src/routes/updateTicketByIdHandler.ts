@@ -11,12 +11,12 @@ export const updateTicketByIdHandler = async (req: Request, res: Response) => {
         throw new NotFoundError()
     }
 
-    if (ticket.orderId) {
-        throw new BadRequestError("Cannot edit ticket")
-    }
-
     if (ticket?.userId != req._currentUser?.id) {
         throw new AuthError("Unauthorized update")
+    }
+
+    if (ticket.orderId) {
+        throw new BadRequestError("Cannot edit ticket")
     }
 
     await ticket.set({

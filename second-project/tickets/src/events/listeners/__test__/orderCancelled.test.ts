@@ -51,7 +51,7 @@ describe("Testing the OrderCancelled listener", () => {
         }
     })
 
-    test("Should publish a TicketUpdatedEvent after a successfull update", async () => {
+    test("Should publish a TicketUpdatedEvent after a successful update", async () => {
         const { listener, data, message } = await listenerSetup()
         await listener.onMessage(data, message)
         expect(stan.client.publish).toHaveBeenCalledTimes(1)
