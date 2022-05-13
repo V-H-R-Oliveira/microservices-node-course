@@ -5,6 +5,7 @@ import { body, param } from "express-validator"
 import { getTicketByIdHandler } from "../routes/getTicketByIdHandler"
 import { getAllTicketsHandler } from "../routes/getAllTicketsHandler"
 import { updateTicketByIdHandler } from "../routes/updateTicketByIdHandler"
+import { deleteTicketByIdHandler } from "../routes/deleteTicketByIdHandler"
 
 const router = Router({ strict: true, caseSensitive: true })
 
@@ -38,6 +39,14 @@ router.put(
         .withMessage("Price must be a positive number"),
     validateRequestHandler,
     updateTicketByIdHandler
+)
+
+router.delete(
+    "/:id",
+    authHandler,
+    param("id").trim().isMongoId().withMessage("Invalid ticket id"),
+    validateRequestHandler,
+    deleteTicketByIdHandler
 )
 
 export { router }

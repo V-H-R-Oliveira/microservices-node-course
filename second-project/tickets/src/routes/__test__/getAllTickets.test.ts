@@ -2,7 +2,7 @@ import { describe, test, expect } from "@jest/globals"
 import request from "supertest"
 import { app } from "../../app"
 
-describe("Testing GET /ap1/v1/tickets endpoint", () => {
+describe("Testing GET /api/v1/tickets endpoint", () => {
     const agent = request(app)
     const baseEndpoint = "/api/v1/tickets"
 

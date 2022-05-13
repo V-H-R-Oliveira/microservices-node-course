@@ -3,7 +3,7 @@ import mongoose from "mongoose"
 import request from "supertest"
 import { app } from "../../app"
 
-describe("Testing /ap1/v1/tickets/:id endpoint", () => {
+describe("Testing /api/v1/tickets/:id endpoint", () => {
     const agent = request(app)
     const baseEndpoint = "/api/v1/tickets"
     const cookies = globalThis.signup()
