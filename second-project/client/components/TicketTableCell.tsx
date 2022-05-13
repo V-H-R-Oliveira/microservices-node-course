@@ -19,6 +19,9 @@ const TicketTableCell: FC<ITicketTableCell> = ({ ticket }) => {
                     <Link href="/tickets/edit/[ticketId]" as={`/tickets/edit/${ticket.id}`}>
                         <a className="nav-link">Edit Ticket</a>
                     </Link>
+                    <Link href="/tickets/delete/[ticketId]" as={`/tickets/delete/${ticket.id}`}>
+                        <a className="nav-link">Delete Ticket</a>
+                    </Link>
                 </div>
             </td>
         </tr>
