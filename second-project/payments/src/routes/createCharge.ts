@@ -21,9 +21,11 @@ const createChargeHandler = async (req: Request, res: Response) => {
         throw new BadRequestError("Cannot pay the order")
     }
 
+    const amountToCents = parseFloat((order.price * 100).toFixed(2))
+
     const charge = await stripeClient.charges.create({
         currency: "usd",
-        amount: order.price * 100, // convert to cents
+        amount: amountToCents,
         source: req.body.token
     })
 
