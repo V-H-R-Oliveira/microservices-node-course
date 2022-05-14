@@ -3,16 +3,16 @@ import { FC } from "react"
 import useRequest from "../hooks/useRequest"
 import { IOrder, ITicket } from "./ICommonTypes"
 
-interface ITicketComponent {
+interface IReserveTicketProps {
     ticket: ITicket
 }
 
-const CreateTicket: FC<ITicketComponent> = ({ ticket }) => {
+const ReserveTicket: FC<IReserveTicketProps> = ({ ticket }) => {
     const { doRequest, errors } = useRequest({
         url: "/api/v1/orders",
         data: { ticketId: ticket.id },
         method: "POST",
-        onSuccess: (order: IOrder) => Router.push("/orders/[orderId]", `/orders/${order.id}`)
+        onSuccess: (order: IOrder) => Router.push("/orders/complete/[orderId]", `/orders/complete/${order.id}`)
     })
 
     const onPurchase = async () => {
@@ -31,4 +31,4 @@ const CreateTicket: FC<ITicketComponent> = ({ ticket }) => {
     )
 }
 
-export default CreateTicket
+export default ReserveTicket

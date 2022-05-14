@@ -34,7 +34,7 @@ const TicketTableCell: FC<ITicketTableCell> = ({ ticket, currentUser }) => {
             <td scope="row" className="text-center align-middle">{ticket.price}</td>
             <td scope="row align-middle">
                 <div className="d-flex justify-content-center align-items-center">
-                    <Link href="/tickets/[ticketId]" as={`/tickets/${ticket.id}`}>
+                    <Link href="/tickets/reserve/[ticketId]" as={`/tickets/reserve/${ticket.id}`}>
                         <a className="nav-link px-1">View Ticket</a>
                     </Link>
 

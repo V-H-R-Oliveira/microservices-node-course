@@ -13,7 +13,7 @@ const StripeWrapper: FC<IStripeWrapper> = ({ order, currentUser }) => {
         url: "/api/v1/payments",
         data: { orderId: order.id },
         method: "POST",
-        onSuccess: () => Router.push("/")
+        onSuccess: () => Router.push("/orders/view/[orderId]", `/orders/view/${order.id}`)
     })
 
     const onToken = async (token: Token) => {

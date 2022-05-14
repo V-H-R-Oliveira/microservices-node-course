@@ -1,12 +1,13 @@
 import { FC, useEffect, useState } from "react"
 import { ICurrentUser, IOrder } from "./ICommonTypes"
 import StripeWrapper from "./StripeWrapper"
+import ViewOrder from "./ViewOrder"
 
-interface IOrderComponent extends ICurrentUser {
+interface ICompleteOrderProps extends ICurrentUser {
     order: IOrder
 }
 
-const CreateOrder: FC<IOrderComponent> = ({ order, currentUser }) => {
+const CompleteOrder: FC<ICompleteOrderProps> = ({ order, currentUser }) => {
     const [timeLeft, setTimeLeft] = useState(0)
 
     useEffect(() => {
@@ -20,16 +21,6 @@ const CreateOrder: FC<IOrderComponent> = ({ order, currentUser }) => {
         return () => clearInterval(setIntervalId)
     }, [order])
 
-    if (order.status == "complete") {
-        return (
-            <div className="text-center">
-                <h1>{order.ticket.title}</h1>
-                <h2>{order.ticket.price}</h2>
-                <h3>Order Completed.</h3>
-            </div>
-        )
-    }
-
     if (timeLeft > 0) {
         return (
             <div className="text-center">
@@ -41,13 +32,7 @@ const CreateOrder: FC<IOrderComponent> = ({ order, currentUser }) => {
         )
     }
 
-    return (
-        <div className="text-center">
-            <h1>{order.ticket.title}</h1>
-            <h2>{order.ticket.price}</h2>
-            <h3>Order Cancelled.</h3>
-        </div>
-    )
+    return <ViewOrder order={order} />
 }
 
-export default CreateOrder
+export default CompleteOrder
