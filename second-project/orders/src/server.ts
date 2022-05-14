@@ -7,6 +7,7 @@ import TicketCreatedListener from "./events/listeners/ticketCreated"
 import TicketUpdatedListener from "./events/listeners/ticketUpdated"
 import ExpirationCompleteListener from "./events/listeners/expirationComplete"
 import PaymentCreatedListener from "./events/listeners/paymentCreated"
+import RefundCreatedListener from "./events/listeners/refundCreated"
 
 const port = process.env?.PORT ?? 8080
 
@@ -47,11 +48,13 @@ const bootstrap = async () => {
     const ticketUpdatedListener = new TicketUpdatedListener(stan.client)
     const expirationCompleteListener = new ExpirationCompleteListener(stan.client)
     const paymentCreatedListener = new PaymentCreatedListener(stan.client)
+    const refundCreatedListener = new RefundCreatedListener(stan.client)
 
     ticketCreatedListener.listen()
     ticketUpdatedListener.listen()
     expirationCompleteListener.listen()
     paymentCreatedListener.listen()
+    refundCreatedListener.listen()
 
     await mongoose.connect(process.env.MONGO_URI)
     console.log("Successfully connected to mongodb")
