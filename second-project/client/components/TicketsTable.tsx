@@ -1,15 +1,15 @@
 import { FC } from "react"
-import { ITicket } from "./ICommonTypes"
+import { ICurrentUser, ITicket } from "./ICommonTypes"
 import TicketTableCell from "./TicketTableCell"
 
-interface ITicketsTable {
+interface ITicketsTable extends ICurrentUser {
     tickets: ITicket[]
 }
 
-const TicketsTable: FC<ITicketsTable> = ({ tickets }) => {
+const TicketsTable: FC<ITicketsTable> = ({ tickets, currentUser }) => {
     return (
         <div className="container">
-            <h1 className="text-center my-2">Tickets</h1>
+            <h1 className="text-center my-2">Available Tickets</h1>
             <div className="table-responsive">
                 <table className="table table-striped">
                     <thead>
@@ -20,7 +20,7 @@ const TicketsTable: FC<ITicketsTable> = ({ tickets }) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {tickets.map((ticket) => <TicketTableCell key={ticket.id} ticket={ticket} />)}
+                        {tickets.map((ticket) => <TicketTableCell key={ticket.id} ticket={ticket} currentUser={currentUser} />)}
                     </tbody>
                 </table>
             </div>

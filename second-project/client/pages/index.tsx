@@ -9,7 +9,7 @@ interface IHome extends ICurrentUser {
 
 const Home: NextPage<IHome> = ({ tickets, currentUser }) => {
   if (currentUser) {
-    return <TicketsTable tickets={tickets} />
+    return <TicketsTable tickets={tickets} currentUser={currentUser} />
   }
 
   return <div>You are not signin</div>
